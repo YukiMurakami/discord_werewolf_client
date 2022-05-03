@@ -1,0 +1,47 @@
+.button {
+    width: 264px;
+    height: 90px;
+    color: #ffffff;
+    padding: 0 0 0 0;
+    background: none;
+    border: 0;
+    background-size: 100%;
+    background-image: url("../images/ui/button.png");
+    position: absolute;
+}
+  
+.button:active {
+    padding: 0.5% 0 0 0;
+    background-image: url("../images/ui/click.png");
+}
+
+.card{
+    position: absolute;
+    width: 400px;
+    height: 400px;
+}
+  
+.card div{
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: 2.7s;
+    backface-visibility: hidden;
+}
+
+.card img{
+    width: 100%;
+    background-size: 100%;
+}
+
+.card .ura{
+    transform: rotateY(-180deg);
+}
+
+.card_hover .omote{
+    transform: rotateY(180deg);
+}
+
+.card_hover .ura{
+    transform: rotateY(0);
+}
