@@ -1,0 +1,100 @@
+export class Volume {
+    constructor(parent, width, x, y, sound, infos) {
+        this.parent = parent;
+        this.element = null;
+        this.width = width
+        this.sound = sound
+        this.infos = infos
+        this.x = x
+        this.y = y
+    }
+
+    callback() {
+        console.log(this.sound)
+        this.sound.set_volume(this.element.value)
+        this.infos["volume"] = this.element.value
+        console.log(this.infos)
+    }
+
+    draw() {
+        if (!this.element) {
+            this.element = document.createElement("input")
+            this.element.type = "range"
+            this.element.min = 0
+            this.element.max = 1
+            this.element.step = 0.1
+            this.element.value = this.infos["volume"]
+            this.parent.appendChild(this.element)
+
+            this.element.style.position = "absolute"
+            this.element.style.width = this.width
+            this.element.style.left = this.x.toString() + "px"
+            this.element.style.top = this.y.toString() + "px"
+
+            let mes = document.createElement("div")
+            this.parent.appendChild(mes)
+            mes.innerHTML = "音量"
+            mes.style.color = "#000000"
+            mes.style.textAlign = "center"
+            mes.style.position = "absolute"
+            mes.style.left = (this.x - 35).toString() + "px"
+            mes.style.top = this.y.toString() + "px"
+
+            this.element.addEventListener("change", () => { this.callback() })
+        }
+    }
+}
+
+
+
+export class Sound {
+    constructor() {
+        this.dic = {}
+        this.dic["craw"] = new Audio("./sounds/craw.mp3")
+        this.dic["vote_bell"] = new Audio("./sounds/vote_bell.mp3")
+        this.dic["minute_bell"] = new Audio("./sounds/minute_bell.mp3")
+        this.dic["lose"] = new Audio("./sounds/lose.mp3")
+        this.dic["morning"] = new Audio("./sounds/morning.mp3")
+        this.dic["win"] = new Audio("./sounds/win.mp3")
+        this.dic["night"] = new Audio("./sounds/night.wav")
+        this.history = []
+    }
+
+    set_volume(volume) {
+        for (let key in this.dic) {
+            this.dic[key].volume = volume
+        }
+    }
+
+    reset() {
+        this.history = []
+    }
+
+    stop() {
+        for (let key in this.dic) {
+            this.dic[key].stop()
+        }
+    }
+
+    play(title, infos, option) {
+        console.log("play before" + title)
+        let game_status = infos["game_status"]
+        let day = game_status["day"]
+        let status = game_status["status"]
+        let minute = game_status["minute"]
+        let second = game_status["second"]
+        let key = status + day.toString() + "/" + minute.toString() + ":" + second.toString()
+        if (option != "") {
+            key = status + day.toString() + "/" + option
+        }
+        if (title in this.dic) {
+            console.log("play before2" + title)
+            console.log(this.history)
+            if (this.history.indexOf(key) == -1) {
+                this.dic[title].play()
+                console.log("play" + title)
+                this.history.push(key)
+            }
+        }
+    }
+}

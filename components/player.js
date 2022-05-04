@@ -14,7 +14,7 @@ export class Player {
 
         this.participateColor = "#ffbb00"
         this.talkingColor = "#33ff33"
-        this.outColor = "#888888"
+        this.outColor = "#cccccc"
         this.disconnectColor = "#dd0000"
     }
 

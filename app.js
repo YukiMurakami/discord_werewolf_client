@@ -8,6 +8,7 @@ import { Explain } from "./components/explain.js";
 import { RoleMenu } from "./components/role_menu.js";
 import { Voice } from "./components/voice.js";
 import { config, jpnname2engname } from "./config.js";
+import { Sound, Volume } from "./components/sound.js";
 
 // 画面サイズ
 const SCREEN_W = 1600 * 0.8;
@@ -19,8 +20,10 @@ let connection = ""
 let infos = {
     "send_id": -1,
     "roleset_open": false,
-    "rolecard_rotate": false
+    "rolecard_rotate": false,
+    "volume": 0.5,
 }
+const sound = new Sound()
 
 function loadAllImages() {
     let images = [
@@ -143,6 +146,7 @@ function drawGame() {
     }
     if (infos["game_status"]["status"] == "ROLE_CHECK") {
         drawRolecheck()
+        sound.reset()
     }
     if (infos["game_status"]["status"] == "NIGHT") {
         drawNight()
@@ -185,6 +189,12 @@ function drawStatus(message) {
     let status = infos["game_status"]
     let players = status["players"]
 
+    //ボリューム操作
+    let volume = new Volume(
+        buttons, 100, 70, 90, sound, infos
+    )
+    volume.draw()
+
     //ボイスチャンネル情報
     let voice = new Voice(
         infos, buttons, 130, 220, 28
@@ -195,7 +205,7 @@ function drawStatus(message) {
     if (status["status"] != "ROLE_CHECK") {
         let radiusW = SCREEN_W * 0.4
         let radiusH = SCREEN_H * 0.4
-        let playerC = players.length * 4
+        let playerC = players.length
         for (let i=0;i<playerC;i++) {
             let sin = Math.sin(Math.PI * 2 / playerC * i)
             let cos = Math.cos(Math.PI * 2 / playerC * i)
@@ -213,7 +223,7 @@ function drawStatus(message) {
             }
             let player = new Player(
                 infos,
-                i % (playerC / 4),
+                i % playerC,
                 buttons,
                 100,
                 SCREEN_W / 2 - 52 + radiusW * Math.cos(Math.PI * 2 / playerC * i + adjust),
@@ -257,24 +267,48 @@ function drawNight() {
     drawBackground("night")
     let status = infos["game_status"]
     drawStatus(status["day"].toString() + "日目夜")
+    sound.play("night", infos, "first")
 }
 
 function drawMorning() {
     drawBackground("afternoon")
     let status = infos["game_status"]
     drawStatus(status["day"].toString() + "日目朝")
+    sound.play("morning", infos, "first")
 }
 
 function drawAfternoon() {
     drawBackground("afternoon")
     let status = infos["game_status"]
     drawStatus(status["day"].toString() + "日目昼")
+    sound.play("minute_bell", infos, "first")
+    let minute = status["minute"]
+    let second = status["second"]
+    if (minute == 1 && second == 0) {
+        sound.play("minute_bell", infos, "")
+    }
+    if (minute == 2 && second == 0) {
+        sound.play("minute_bell", infos, "")
+    }
+    if (minute == 3 && second == 0) {
+        sound.play("minute_bell", infos, "")
+    }
+    if (minute == 0 && second == 30) {
+        sound.play("craw", infos, "")
+    }
+    if (minute == 0 && second == 20) {
+        sound.play("craw", infos, "")
+    }
+    if (minute == 0 && second == 10) {
+        sound.play("craw", infos, "")
+    }
 }
 
 function drawVote() {
     drawBackground("evening")
     let status = infos["game_status"]
     drawStatus(status["day"].toString() + "日目夕")
+    sound.play("vote_bell", infos, "first")
 }
 
 function drawExcution() {
@@ -289,8 +323,10 @@ function drawResult() {
 
     if (status["result"] == "WEREWOLF" || status["result"] == "FOX") {
         drawBackground("werewolf_win")
+        sound.play("lose", infos, "first")
     } else {
         drawBackground("afternoon")
+        sound.play("win", infos, "first")
     }
     
     let title = ""
@@ -441,6 +477,7 @@ function drawSetting() {
         dic["game_start"] = "ゲーム開始"
     } else {
         dic = {}
+        infos["roleset_open"] = false
     }
     let count = 0;
     for (let key in dic) {
