@@ -21,7 +21,7 @@ let infos = {
     "send_id": -1,
     "roleset_open": false,
     "rolecard_rotate": false,
-    "volume": 0.5,
+    "volume": 0.2,
 }
 const sound = new Sound()
 
