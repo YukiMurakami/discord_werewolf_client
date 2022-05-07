@@ -12,29 +12,28 @@ export class Background {
         this.type = type
         //console.log("back draw", this.type)
         if (!this.element) {
-            this.element = document.createElement("div")
+            this.element = document.createElement("img")
             this.element.style.width = this.width
             this.element.style.height = this.height
 
-            this.cover = document.createElement("div")
+            this.cover = document.createElement("img")
             this.cover.style.width = this.width
             this.cover.style.height = this.height
-            this.element.appendChild(this.cover)
+            this.cover.style.position = "absolute"
+            this.cover.style.top = "7.5"
+            this.cover.style.left = "7.5"
             this.parent.appendChild(this.element)
+            this.parent.appendChild(this.cover)
         }
 
         if (this.type == "black") {
-            this.element.style.backgroundColor = "#000000"
-            this.cover.style.backgroundColor = "rgba(255,255,255,0.0)"
-            this.element.style.backgroundImage = null
+            this.cover.style.backgroundColor = "rgba(0, 0, 0, 1)"
         } else {
             let image = this.type
             if (this.type == "werewolf_win") {
                 image = "afternoon"
             }
-            this.element.style.backgroundImage = "url(" + "./images/backgrounds/" + image + ".jpg" + ")"
-            this.element.style.backgroundSize = "100%"
-
+            this.element.src = "./images/backgrounds/" + image + ".jpg"
             this.cover.style.backgroundColor = "rgba(255,255,255,0.1)"
             if (this.type == "werewolf_win") {
                 this.cover.style.backgroundColor = "rgba(255,0,0,0.5)"

@@ -95,13 +95,15 @@ function cleanup() {
             buttons.removeChild(buttons.firstChild);
         }
         for (let key in elements) {
-            elements[key] = null;
+            if (key != "background") {
+                elements[key] = null;
+            }
         }
     }
 }
 
 function drawBackground(type) {
-    let buttons = document.getElementById("buttons")
+    let buttons = document.getElementById("back")
     if (!elements["background"]) {
         let back = new Background(
             buttons, SCREEN_W, SCREEN_H
