@@ -6,9 +6,11 @@ export class Phase {
         this.width = width
         this.x = x
         this.y = y
+        this.mes = null;
     }
 
-    draw() {
+    draw(title) {
+        this.title = title
         if (!this.element) {
             this.element = document.createElement("div")
             this.parent.appendChild(this.element)
@@ -17,20 +19,20 @@ export class Phase {
             this.element.style.backgroundSize = "100%"
             this.element.style.width = this.width
             this.element.style.height = this.width / 356 * 120
-            this.element.style.fontSize = Number(this.element.clientHeight / 45 * 100).toString() + "%"
-            if (this.title.length >= 6) {
-                this.element.style.fontSize = Number(this.element.clientHeight / 45 * 100 * 0.8).toString() + "%"
-            }
             this.element.style.left = this.x.toString() + "px"
             this.element.style.top = this.y.toString() + "px"
-
-            let mes = document.createElement("div")
-            this.element.appendChild(mes)
-            mes.innerHTML = this.title
-            mes.style.color = "#000000"
-            mes.style.textAlign = "center"
+            this.mes = document.createElement("div")
+            this.element.appendChild(this.mes)
+            this.mes.style.color = "#000000"
+            this.mes.style.textAlign = "center"
             this.element.style.position = "absolute"
-            mes.style.padding = "7% 16% 0 16%"
+            this.mes.style.padding = "7% 16% 0 16%"
+        }
+        this.mes.innerHTML = this.title
+        if (this.title.length >= 6) {
+            this.element.style.fontSize = Number(this.element.clientHeight / 45 * 100 * 0.8).toString() + "%"
+        } else {
+            this.element.style.fontSize = Number(this.element.clientHeight / 45 * 100).toString() + "%"
         }
     }
 }

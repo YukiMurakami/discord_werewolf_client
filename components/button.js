@@ -10,11 +10,17 @@ export class Button {
         this.key = key
     }
 
-    draw() {
+    draw(title="", key="") {
+        if (title != "") {
+            this.title = title
+        }
+        let last_key = this.key
+        if (key != "") {
+            this.key = key
+        }
         if (!this.element) {
             this.element = document.createElement("input")
             this.element.type = "button"
-            this.element.value = this.title
             this.element.classList.add("button")
             if (!this.key) {
                 this.element.addEventListener("click", this.func)
@@ -30,6 +36,26 @@ export class Button {
             this.element.style.fontSize = Number(this.element.clientHeight / 45 * 100).toString() + "%"
             this.element.style.left = this.x.toString() + "px"
             this.element.style.top = this.y.toString() + "px"
+        }
+        this.element.value = this.title
+        if (this.key != last_key) {
+            // イベントを変更
+            if (last_key == null) {
+                this.element.removeEventListener("click", this.func)
+            } else {
+                this.element.removeEventListener("click", {
+                    message: last_key,
+                    handleEvent: this.func
+                })
+            }
+            if (this.key == null) {
+                this.element.addEventListener("click", this.func)
+            } else {
+                this.element.addEventListener("click", {
+                    message: this.key,
+                    handleEvent: this.func
+                })
+            }
         }
     }
 }

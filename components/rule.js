@@ -1,15 +1,15 @@
 export class Rule {
-    constructor(infos, parent, width, x, y, only_time) {
+    constructor(infos, parent, width, x, y) {
         this.infos = infos
         this.parent = parent;
         this.element = null;
         this.width = width
         this.x = x
         this.y = y
-        this.only_time = only_time
+        this.mes = null;
     }
 
-    draw() {
+    draw(only_time) {
         let status = this.infos["game_status"]
         let players = status["players"]
         if (!this.element) {
@@ -18,9 +18,6 @@ export class Rule {
             this.parent.appendChild(this.element)
             this.element.style.width = this.width
             this.element.style.height = this.width * 0.55
-            if (this.only_time) {
-                this.element.style.height = this.width * 0.2
-            }
             this.element.style.borderRadius = "8%";
             this.element.style.backgroundColor = "rgba(0,0,0,0.7)"
             this.element.style.left = this.x.toString() + "px"
@@ -29,49 +26,53 @@ export class Rule {
             this.element.style.borderStyle = "solid"
             this.element.style.borderColor = "#eeeeee"
 
-            let role_n = 0
-            let role_str = ""
-            for (let key in status["rule"]["roles"]) {
-                let num = status["rule"]["roles"][key]
-                role_n += num
-                role_str += key + num.toString()
-            }
-            let first_seer_str = "自由占い"
-            if (status["rule"]["first_seer"] == "RANDOM_WHITE") {
-                first_seer_str = "お告げ"
-            }
-            if (status["rule"]["first_seer"] == "NO") {
-                first_seer_str = "なし"
-            }
-            let guard_str = "あり"
-            if (status["rule"]["bodyguard"] == "CANNOT_CONSECUTIVE_GUARD") {
-                guard_str = "なし"
-            }
-            let minute_str = status["minute"].toString()
-            let second_str = status["second"].toString()
-            if (status["second"] < 10) {
-                second_str = "0" + status["second"].toString()
-            }
-            let rule_str = "<font size='6'>" + minute_str + ":" + second_str + "</font>"
-            if (!this.only_time) {
-                rule_str += "<br>人数：" + players.length.toString() + "/" + role_n.toString()
-                rule_str += "<br>役職：" + role_str
-                rule_str += "<br>初日占い：" + first_seer_str
-                rule_str += "<br>連続ガード：" + guard_str
-            }
+            this.mes = document.createElement("div")
+            this.mes.style.fontSize = "100%"
+            this.mes.style.color = "#ffffff"
+            this.mes.style.position = "absolute"
+            this.mes.style.width = this.width
+            this.mes.style.color = "#eeeeee"
+            this.mes.style.padding = "0 0 0 10"
 
-            let mes = document.createElement("div")
-            mes.innerHTML = rule_str
-            mes.style.fontSize = "100%"
-            mes.style.color = "#ffffff"
-            mes.style.position = "absolute"
-            mes.style.width = this.width
-            mes.style.color = "#eeeeee"
-            mes.style.padding = "0 0 0 10"
-
-            this.element.appendChild(mes)
-
-
+            this.element.appendChild(this.mes)
         }
+        if (only_time) {
+            this.element.style.height = this.width * 0.2
+        } else {
+            this.element.style.height = this.width * 0.55
+        }
+
+        let role_n = 0
+        let role_str = ""
+        for (let key in status["rule"]["roles"]) {
+            let num = status["rule"]["roles"][key]
+            role_n += num
+            role_str += key + num.toString()
+        }
+        let first_seer_str = "自由占い"
+        if (status["rule"]["first_seer"] == "RANDOM_WHITE") {
+            first_seer_str = "お告げ"
+        }
+        if (status["rule"]["first_seer"] == "NO") {
+            first_seer_str = "なし"
+        }
+        let guard_str = "あり"
+        if (status["rule"]["bodyguard"] == "CANNOT_CONSECUTIVE_GUARD") {
+            guard_str = "なし"
+        }
+        let minute_str = status["minute"].toString()
+        let second_str = status["second"].toString()
+        if (status["second"] < 10) {
+            second_str = "0" + status["second"].toString()
+        }
+        let rule_str = "<font size='6'>" + minute_str + ":" + second_str + "</font>"
+        if (!only_time) {
+            rule_str += "<br>人数：" + players.length.toString() + "/" + role_n.toString()
+            rule_str += "<br>役職：" + role_str
+            rule_str += "<br>初日占い：" + first_seer_str
+            rule_str += "<br>連続ガード：" + guard_str
+        }
+
+        this.mes.innerHTML = rule_str
     }
 }

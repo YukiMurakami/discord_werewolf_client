@@ -22,6 +22,22 @@ let infos = {
     "roleset_open": false,
     "rolecard_rotate": false,
     "volume": 0.2,
+    "now_status": "offline"
+}
+let elements = {
+    "background": null,
+    "phase": null,
+    "volume": null,
+    "voice": null,
+    "rule": null,
+    "explain": null,
+    "first_seer_button": null,
+    "bodyguard_rule_button": null,
+    "role_button": null,
+    "start_button": null,
+    "logout_button": null,
+    "rolemenu": null,
+    "result_button": null,
 }
 const sound = new Sound()
 
@@ -35,7 +51,7 @@ function loadAllImages() {
         "./images/backgrounds/evening.jpg",
         "./images/backgrounds/night.jpg",
     ]
-    let buttons = document.getElementById("buttons")
+    let buttons = document.getElementById("tmp")
     for (let i=0;i<images.length;i++) {
         let image = document.createElement("img")
         image.src = images[i]
@@ -57,30 +73,52 @@ function draw() {
     }
 }
 
+function convert_status(status) {
+    if (status == "game_status") {
+        return infos["game_status"]["status"]
+    }
+    return status
+}
+
 function cleanup() {
-    let buttons = document.getElementById("buttons")
+    let buttons = document.getElementById("tmp")
     while (buttons.firstChild) {
         buttons.removeChild(buttons.firstChild);
     }
-    let mes = document.getElementById("message")
-    mes.innerText = ""
+    let now_status = convert_status(client_status)
+    if (infos["now_status"] != now_status) {
+        //console.log("change " + infos["now_status"] + " -> " + now_status)
+        infos["now_status"] = now_status
+
+        let buttons = document.getElementById("buttons")
+        while (buttons.firstChild) {
+            buttons.removeChild(buttons.firstChild);
+        }
+        for (let key in elements) {
+            elements[key] = null;
+        }
+    }
 }
 
 function drawBackground(type) {
     let buttons = document.getElementById("buttons")
-    let back = new Background(
-        type, buttons, SCREEN_W, SCREEN_H
-    )
-    back.draw()
+    if (!elements["background"]) {
+        let back = new Background(
+            buttons, SCREEN_W, SCREEN_H
+        )
+        elements["background"] = back
+    }
+    elements["background"].draw(type)
 }
 
 function drawTitle() {
     loadAllImages()
-    let buttons = document.getElementById("buttons")
+    let buttons = document.getElementById("tmp")
 
     drawBackground("black")
     
-    let mes = document.getElementById("message")
+    let mes = document.createElement("div")
+    buttons.appendChild(mes)
     mes.innerText = "Discord 人狼ツール v1.0"
     mes.style.color = "#ffffff"
     mes.style.fontSize = "30px"
@@ -92,7 +130,7 @@ function drawTitle() {
     let button = new Button("開始", buttons, () => {
         connection = new WebSocket(URI);
         connection.onopen = function(event) {
-            console.log("connect ok");
+            //console.log("connect ok");
             sendData({
                 "message": "get_free_account",
             });
@@ -105,7 +143,7 @@ function drawTitle() {
 }
 
 function drawAccountSelect() {
-    let buttons = document.getElementById("buttons")
+    let buttons = document.getElementById("tmp")
 
     drawBackground("black")
     
@@ -185,25 +223,34 @@ function drawStatus(message) {
     }
 
     //今のフェーズ情報
-    let phase = new Phase(
-        message, buttons, 180, 20, 20
-    )
-    phase.draw()
+    if (!elements["phase"]) {
+        let phase = new Phase(
+            message, buttons, 180, 20, 20
+        )
+        elements["phase"] = phase
+    }
+    elements["phase"].draw(message)
 
     let status = infos["game_status"]
     let players = status["players"]
 
     //ボリューム操作
-    let volume = new Volume(
-        buttons, 100, 70, 90, sound, infos
-    )
-    volume.draw()
+    if (!elements["volume"]) {
+        let volume = new Volume(
+            buttons, 100, 70, 90, sound, infos
+        )
+        elements["volume"] = volume
+    }
+    elements["volume"].draw()
 
     //ボイスチャンネル情報
-    let voice = new Voice(
-        infos, buttons, 130, 220, 28
-    )
-    voice.draw()
+    if (!elements["voice"]) {
+        let voice = new Voice(
+            infos, buttons, 130, 220, 28
+        )
+        elements["voice"] = voice
+    }
+    elements["voice"].draw()
 
     //プレイヤー情報
     if (status["status"] != "ROLE_CHECK") {
@@ -225,16 +272,23 @@ function drawStatus(message) {
             if (i == 0) {
                 adjust = 0
             }
-            let player = new Player(
-                infos,
-                i % playerC,
-                buttons,
-                100,
-                SCREEN_W / 2 - 52 + radiusW * Math.cos(Math.PI * 2 / playerC * i + adjust),
-                SCREEN_H / 2 - 62 + radiusH * Math.sin(Math.PI * 2 / playerC * i + adjust),
-                button_click
-            )
-            player.draw()
+            let x = SCREEN_W / 2 - 52 + radiusW * Math.cos(Math.PI * 2 / playerC * i + adjust)
+            let y = SCREEN_H / 2 - 62 + radiusH * Math.sin(Math.PI * 2 / playerC * i + adjust)
+            let key = "player" + players[i]["discord_id"]
+            if (key in elements && elements[key]) {
+            } else {
+                let player = new Player(
+                    infos,
+                    i % playerC,
+                    buttons,
+                    100,
+                    x,
+                    y,
+                    button_click
+                )
+                elements[key] = player
+            }
+            elements[key].draw()
         }
     }
 
@@ -246,18 +300,22 @@ function drawStatus(message) {
         y = 50
         time_only = true
     }
-    let rule = new Rule(
-        infos, buttons, ruleW, (SCREEN_W - ruleW) / 2, y, time_only
-    )
-    rule.draw()
+    if (!elements["rule"]) {
+        let rule = new Rule(
+            infos, buttons, ruleW, (SCREEN_W - ruleW) / 2, y
+        )
+        elements["rule"] = rule
+    }
+    elements["rule"].draw(time_only)
 
     //その他情報
-    if (status["status"] != "RESULT") {
+    if (!elements["explain"]) {
         let explain = new Explain(
             infos, buttons, ruleW * 1.4, (SCREEN_W - ruleW * 1.4) / 2, y + 170
         )
-        explain.draw()
+        elements["explain"] = explain
     }
+    elements["explain"].draw(infos)
 }
 
 function drawNight() {
@@ -371,24 +429,21 @@ function drawResult() {
             }
         )
     }
-    let dic = {}
     //先頭プレイヤーはゲーム結果閉じるアクション付き
     if (players.length > 0 && players[0]["discord_id"] == infos["discord_id"]) {
-        dic["result:"] = "ゲーム終了"
+        if (!elements["result_button"]) {
+            let count = 1
+            let button = new Button(
+                "ゲーム終了", buttons, button_click,
+                120,
+                count % 3 * 120 + (SCREEN_W - 300) / 2 - 30,
+                (count / 3 | 0) * 40 + (SCREEN_H - 200) / 2 + 160,
+                "result:"
+            )
+            elements["result_button"] = button
+        }
+        elements["result_button"].draw()
     } else {
-        dic = {}
-    }
-    let count = 1
-    for (let key in dic) {
-        let button = new Button(
-            dic[key], buttons, button_click,
-            120,
-            count % 3 * 120 + (SCREEN_W - 300) / 2 - 30,
-            (count / 3 | 0) * 40 + (SCREEN_H - 200) / 2 + 160,
-            key
-        )
-        button.draw()
-        count += 1;
     }
 }
 
@@ -456,16 +511,24 @@ function drawSetting() {
 
     function button_click(e) {
         if (this.message == "role_set") {
-            if (!document.getElementById("role_menu")) {
-                let rolemenu = new RoleMenu(
-                    infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click
-                )
-                rolemenu.draw()
+            if (!infos["roleset_open"]) {
+                if (!elements["rolemenu"]) {
+                    let rolemenu = new RoleMenu(
+                        infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click
+                    )
+                    elements["rolemenu"] = rolemenu
+                }
                 infos["roleset_open"] = true
+                elements["rolemenu"].draw(infos["roleset_open"])
             } else {
-                let rolemenu = document.getElementById("role_menu")
-                buttons.removeChild(rolemenu)
+                if (!elements["rolemenu"]) {
+                    let rolemenu = new RoleMenu(
+                        infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click
+                    )
+                    elements["rolemenu"] = rolemenu
+                }
                 infos["roleset_open"] = false
+                elements["rolemenu"].draw(infos["roleset_open"])
             }
         } else {
             sendData(
@@ -481,57 +544,64 @@ function drawSetting() {
     let dic = {}
     if (players.length > 0 && players[0]["discord_id"] == infos["discord_id"]) {
         if (status["rule"]["first_seer"] == "RANDOM_WHITE") {
-            dic["first_seer_no"] = "初日占い:お告げ"
+            dic["first_seer_no"] = ["初日占い:お告げ", "first_seer_button"]
         }
         if (status["rule"]["first_seer"] == "NO") {
-            dic["first_seer_free"] = "初日占い:なし"
+            dic["first_seer_free"] = ["初日占い:なし", "first_seer_button"]
         }
         if (status["rule"]["first_seer"] == "FREE") {
-            dic["first_seer_random_white"] = "初日占い:自由"
+            dic["first_seer_random_white"] = ["初日占い:自由", "first_seer_button"]
         }
         if (status["rule"]["bodyguard"] == "CONSECUTIVE_GUARD") {
-            dic["bodyguard_rule_no"] = "連続ガード:あり"
+            dic["bodyguard_rule_no"] = ["連続ガード:あり", "bodyguard_rule_button"]
         }
         if (status["rule"]["bodyguard"] == "CANNOT_CONSECUTIVE_GUARD") {
-            dic["bodyguard_rule_yes"] = "連続ガード:なし"
+            dic["bodyguard_rule_yes"] = ["連続ガード:なし", "bodyguard_rule_button"]
         }
-        dic["role_set"] = "役職"
-        dic["game_start"] = "ゲーム開始"
+        dic["role_set"] = ["役職", "role_button"]
+        dic["game_start"] = ["ゲーム開始", "start_button"]
     } else {
         dic = {}
         infos["roleset_open"] = false
     }
     let count = 0;
     for (let key in dic) {
-        let button = new Button(
-            dic[key], buttons, button_click,
-            120,
-            count % 3 * 120 + (SCREEN_W - 300) / 2 - 30,
-            (count / 3 | 0) * 40 + (SCREEN_H - 200) / 2 + 160,
-            key
-        )
-        button.draw()
+        if (!elements[dic[key][1]]) {
+            let button = new Button(
+                dic[key][0], buttons, button_click,
+                120,
+                count % 3 * 120 + (SCREEN_W - 300) / 2 - 30,
+                (count / 3 | 0) * 40 + (SCREEN_H - 200) / 2 + 160,
+                key
+            )
+            elements[dic[key][1]] = button
+        }
+        elements[dic[key][1]].draw(dic[key][0], key)
         count += 1;
     }
 
-    let button = new Button(
-        "退出", buttons, button_click,
-        120, SCREEN_W - 140, SCREEN_H - 50, "logout")
-    button.draw()
+    if (!elements["logout_button"]) {
+        let button = new Button(
+            "退出", buttons, button_click,
+            120, SCREEN_W - 140, SCREEN_H - 50, "logout")
+        elements["logout_button"] = button
+    }
+    elements["logout_button"].draw()
 
-    if (infos["roleset_open"]) {
+    if (!elements["rolemenu"]) {
         let rolemenu = new RoleMenu(
             infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click
         )
-        rolemenu.draw()
+        elements["rolemenu"] = rolemenu
     }
+    elements["rolemenu"].draw(infos["roleset_open"])
 }
 
 // メッセージ受信イベント
 function onMessage(event) {
     if (event && event.data) {
         var json = JSON.parse(event.data)
-        console.log(json)
+        //console.log(json)
         if(json["message"] == "free_account") {
             client_status = "account_select"
             infos["accounts"] = json["accounts"]
@@ -551,8 +621,8 @@ function onMessage(event) {
 
 function sendData(data) {
     var json = JSON.stringify(data);
-    console.log("send")
-    console.log(json)
+    //console.log("send")
+    //console.log(json)
     connection.send(json);
 }
 
