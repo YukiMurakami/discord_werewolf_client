@@ -24,7 +24,9 @@ export class Player {
         this.buttons = {}
     }
 
-    draw() {
+    draw(x, y) {
+        this.x = x
+        this.y = y
         let players = this.infos["game_status"]["players"]
         let my_player = null
         for (let i=0;i<players.length;i++) {
@@ -56,8 +58,6 @@ export class Player {
             this.element.style.height = this.width * 1.2
             this.element.style.borderRadius = "8%";
             this.element.style.backgroundColor = "rgba(0,0,0,0.7)"
-            this.element.style.left = this.x.toString() + "px"
-            this.element.style.top = this.y.toString() + "px"
             this.element.style.borderWidth = "4px"
             this.element.style.borderStyle = "solid"
             this.element.style.borderColor = this.participateColor
@@ -103,6 +103,9 @@ export class Player {
             this.element.appendChild(mes)
             this.mes = mes
         }
+
+        this.element.style.left = this.x.toString() + "px"
+        this.element.style.top = this.y.toString() + "px"
         
         this.element.style.borderColor = this.participateColor
         if (!voice_on) {

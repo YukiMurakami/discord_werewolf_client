@@ -22,7 +22,8 @@ let infos = {
     "roleset_open": false,
     "rolecard_rotate": false,
     "volume": 0.2,
-    "now_status": "offline"
+    "now_status": "offline",
+    "playerids": []
 }
 let elements = {
     "background": null,
@@ -86,10 +87,25 @@ function cleanup() {
         buttons.removeChild(buttons.firstChild);
     }
     let now_status = convert_status(client_status)
+
+    let reset_elements = false
     if (infos["now_status"] != now_status) {
         //console.log("change " + infos["now_status"] + " -> " + now_status)
         infos["now_status"] = now_status
-
+        reset_elements = true
+    }
+    if ("game_status" in infos) {
+        let playerids = []
+        let players = infos["game_status"]["players"]
+        for (let i=0;i<players.length;i++) {
+            playerids.push(players[i]["discord_id"])
+        }
+        if (infos["playerids"] != playerids) {
+            infos["playerids"] = playerids
+            reset_elements = true
+        }
+    }
+    if (reset_elements) {
         let buttons = document.getElementById("buttons")
         while (buttons.firstChild) {
             buttons.removeChild(buttons.firstChild);
@@ -255,6 +271,7 @@ function drawStatus(message) {
     elements["voice"].draw()
 
     //プレイヤー情報
+    let keys = []
     if (status["status"] != "ROLE_CHECK") {
         let radiusW = SCREEN_W * 0.4
         let radiusH = SCREEN_H * 0.4
@@ -277,6 +294,7 @@ function drawStatus(message) {
             let x = SCREEN_W / 2 - 52 + radiusW * Math.cos(Math.PI * 2 / playerC * i + adjust)
             let y = SCREEN_H / 2 - 62 + radiusH * Math.sin(Math.PI * 2 / playerC * i + adjust)
             let key = "player" + players[i]["discord_id"]
+            keys.push(key)
             if (key in elements && elements[key]) {
             } else {
                 let player = new Player(
@@ -290,7 +308,7 @@ function drawStatus(message) {
                 )
                 elements[key] = player
             }
-            elements[key].draw()
+            elements[key].draw(x, y)
         }
     }
 
