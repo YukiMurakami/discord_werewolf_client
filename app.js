@@ -28,6 +28,10 @@ const sound = new Sound()
 function loadAllImages() {
     let images = [
         "./images/backgrounds/afternoon.jpg",
+        "./images/backgrounds/afternoon0200.jpg",
+        "./images/backgrounds/afternoon0130.jpg",
+        "./images/backgrounds/afternoon0100.jpg",
+        "./images/backgrounds/afternoon0030.jpg",
         "./images/backgrounds/evening.jpg",
         "./images/backgrounds/night.jpg",
     ]
@@ -278,12 +282,30 @@ function drawMorning() {
 }
 
 function drawAfternoon() {
-    drawBackground("afternoon")
     let status = infos["game_status"]
-    drawStatus(status["day"].toString() + "日目昼")
-    sound.play("minute_bell", infos, "first")
     let minute = status["minute"]
     let second = status["second"]
+
+    let back = "afternoon"
+    if (minute == 1) {
+        if (second >= 30) {
+            back = "afternoon0200"
+        } else {
+            back = "afternoon0130"
+        }
+    }
+    if (minute == 0) {
+        if (second >= 30) {
+            back = "afternoon0100"
+        } else {
+            back = "afternoon0030"
+        }
+    }
+    drawBackground(back)
+    
+    drawStatus(status["day"].toString() + "日目昼")
+    sound.play("minute_bell", infos, "first")
+    
     if (minute == 1 && second == 0) {
         sound.play("minute_bell", infos, "")
     }

@@ -1,0 +1,9 @@
+このディレクトリに下記ファイルを設置
+サイズは1280 * 720 推奨
+afternoon.jpg: 昼用の画像
+afternoon0200.jpg: 昼用の画像（残り2分以降）
+afternoon0130.jpg: 昼用の画像（残り1.5分以降）
+afternoon0100.jpg: 昼用の画像（残り1分以降）
+afternoon0030.jpg: 昼用の画像（残り0.5分以降）
+evening.jpg: 夕方用の画像
+night.jpg: 夜用の画像
