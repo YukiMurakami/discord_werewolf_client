@@ -135,9 +135,15 @@ export class Player {
                 already_vote = "<br>(投票済み)"
             }
         }
+        let skip = ""
+        if (this.infos["game_status"]["status"] == "AFTERNOON") {
+            if (players[this.index]["skip"]) {
+                skip = "<br>(スキップ済み)"
+            }
+        }
 
-        this.mes.innerHTML = players[this.index]["name"] + vote_count + already_vote
-        if (already_vote == "") {
+        this.mes.innerHTML = players[this.index]["name"] + vote_count + already_vote + skip
+        if (already_vote == "" && skip == "") {
             this.mes.style.bottom = this.width * 0.1
         } else {
             this.mes.style.bottom = 0
@@ -165,6 +171,7 @@ export class Player {
                 "seer": "占う",
                 "bodyguard": "守る",
                 "excution": "遺言完了",
+                "skip": "議論スキップ",
             }
             if (["vote", "attack", "seer", "bodyguard"].indexOf(div[0]) != -1) {
                 if (div[2] == players[this.index]["discord_id"]) {
@@ -179,7 +186,7 @@ export class Player {
                     this.buttons[action].element.hidden = false
                 }
             }
-            if (["excution"].indexOf(div[0]) != -1) {
+            if (["excution", "skip"].indexOf(div[0]) != -1) {
                 if (div[1] == players[this.index]["discord_id"]) {
                     if (action in this.buttons && this.buttons[action]) {
                     } else {
