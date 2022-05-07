@@ -52,15 +52,15 @@ export class Rule {
             if (status["second"] < 10) {
                 second_str = "0" + status["second"].toString()
             }
-            let rule_str = "時間：" + minute_str + ":" + second_str
+            let rule_str = "<font size='6'>" + minute_str + ":" + second_str + "</font>"
             if (!this.only_time) {
-                rule_str += "<br><br>人数：" + players.length.toString() + "/" + role_n.toString()
+                rule_str += "<br>人数：" + players.length.toString() + "/" + role_n.toString()
                 rule_str += "<br>役職：" + role_str
                 rule_str += "<br>初日占い：" + first_seer_str
                 rule_str += "<br>連続ガード：" + guard_str
             }
 
-            let mes = document.createElement("p")
+            let mes = document.createElement("div")
             mes.innerHTML = rule_str
             mes.style.fontSize = "100%"
             mes.style.color = "#ffffff"
