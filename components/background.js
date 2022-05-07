@@ -25,7 +25,7 @@ export class Background {
                 let back2 = document.createElement("div")
                 back2.style.width = this.width
                 back2.style.height = this.height
-                back2.style.backgroundColor = "rgba(255,255,255,0.3)"
+                back2.style.backgroundColor = "rgba(255,255,255,0.1)"
                 if (this.type == "werewolf_win") {
                     back2.style.backgroundColor = "rgba(255,0,0,0.5)"
                 }
