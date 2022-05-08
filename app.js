@@ -11,8 +11,9 @@ import { config, jpnname2engname } from "./config.js";
 import { Sound, Volume } from "./components/sound.js";
 
 // 画面サイズ
-const SCREEN_W = document.documentElement.clientWidth;
+// const SCREEN_W = document.documentElement.clientWidth;
 const SCREEN_H = document.documentElement.clientHeight;
+const SCREEN_W = SCREEN_H * 16 / 9;
 
 const URI = config["URI"]
 let client_status = "offline"
