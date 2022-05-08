@@ -636,6 +636,14 @@ function onMessage(event) {
                 draw()
             }
         }
+        if(json["message"] == "kicked") {
+            sendData(
+                {
+                    "discord_id": infos["discord_id"],
+                    "message": "logout"
+                }
+            )
+        }
     }
 }
 
