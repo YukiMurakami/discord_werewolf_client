@@ -32,3 +32,7 @@ $ vim config.js
 ### 音の設定
 - soundsディレクトリ以下のreadmeに沿って、必要な音声ファイルをいれる
 
+----
+
+### 背景画像の設定
+- images/backgrounds ディレクトリ以下のreadmeに沿って、必要な16:9の背景画像をいれる
