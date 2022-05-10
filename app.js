@@ -12,8 +12,9 @@ import { config, jpnname2engname } from "./config.js";
 import { Sound, Volume } from "./components/sound.js";
 
 // 画面サイズ
-const SCREEN_W = 1600 * 0.8;
-const SCREEN_H = 900 * 0.8;
+// const SCREEN_W = document.documentElement.clientWidth;
+const SCREEN_H = document.documentElement.clientHeight;
+const SCREEN_W = SCREEN_H * 16 / 9;
 
 const URI = config["URI"]
 let client_status = "offline"
@@ -652,6 +653,14 @@ function onMessage(event) {
                 infos["game_status"] = json["status"]
                 draw()
             }
+        }
+        if(json["message"] == "kicked") {
+            sendData(
+                {
+                    "discord_id": infos["discord_id"],
+                    "message": "logout"
+                }
+            )
         }
     }
 }

@@ -183,6 +183,7 @@ export class Player {
                 "bodyguard": "守る",
                 "excution": "遺言完了",
                 "skip": "議論スキップ",
+                "kick": "キック",
             }
             if (["vote", "attack", "seer", "bodyguard"].indexOf(div[0]) != -1) {
                 if (div[2] == players[this.index]["discord_id"]) {
@@ -197,7 +198,7 @@ export class Player {
                     this.buttons[action].element.hidden = false
                 }
             }
-            if (["excution", "skip"].indexOf(div[0]) != -1) {
+            if (["excution", "skip", "kick"].indexOf(div[0]) != -1) {
                 if (div[1] == players[this.index]["discord_id"]) {
                     if (action in this.buttons && this.buttons[action]) {
                     } else {
