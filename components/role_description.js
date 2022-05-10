@@ -57,7 +57,7 @@ export class RoleDescription {
             console.log(this.title)
 
             this.mes = document.createElement("p")
-            this.mes.style.fontSize = "100%"
+            this.mes.style.fontSize = "90%"
             this.mes.style.color = "#ffffff"
             this.mes.style.position = "absolute"
             this.mes.style.width = this.width * 0.95
