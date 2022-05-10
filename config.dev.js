@@ -79,7 +79,7 @@ export function engname2description(rolename) {
             "name": "狂人",
             "team":team["werewolf"],
             "victory_condition":victory_condition["werewolf"],
-            "description":"人狼の味方をする狂った村人。人狼陣営の勝利を目指す。<br>狂人は誰か人狼なのか知らず、人狼も誰が狂人か知らない。",
+            "description":"人狼の味方をする狂った村人。人狼陣営の勝利を目指す。<br>狂人は誰が人狼なのか知らず、人狼も誰が狂人か知らない。",
         },
         "mason": {
             "name": "共有者",
@@ -91,7 +91,7 @@ export function engname2description(rolename) {
             "name": "狂信者",
             "team":team["werewolf"],
             "victory_condition":victory_condition["werewolf"],
-            "description":"人狼の味方をする狂った村人。人狼陣営の勝利を目指す。<br>狂人は誰か人狼なのか知っているが、人狼は誰が狂信者か知らない。",
+            "description":"人狼の味方をする狂った村人。人狼陣営の勝利を目指す。<br>狂人は誰が人狼なのか知っているが、人狼は誰が狂信者か知らない。",
         },
         "fox": {
             "name": "妖狐",
