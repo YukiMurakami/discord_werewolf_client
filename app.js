@@ -6,6 +6,7 @@ import { Player } from "./components/player.js";
 import { Rule } from "./components/rule.js";
 import { Explain } from "./components/explain.js";
 import { RoleMenu } from "./components/role_menu.js";
+import { RoleDescription } from "./components/role_description.js";
 import { Voice } from "./components/voice.js";
 import { config, jpnname2engname } from "./config.js";
 import { Sound, Volume } from "./components/sound.js";
@@ -39,6 +40,7 @@ let elements = {
     "logout_button": null,
     "rolemenu": null,
     "result_button": null,
+    "role_description":null
 }
 const sound = new Sound()
 
@@ -239,6 +241,20 @@ function drawStatus(message) {
             }
         )
     }
+    function role_mouseover(e){
+        if(this.role != "back_card"){
+
+            let descriptionW = 250;
+            let y = (SCREEN_H - descriptionW * 0.6) / 2 -60
+            console.log("role_mouseover:" + this.showflag)
+            let roledescription = new RoleDescription(
+                document.getElementById("buttons"),
+                descriptionW * 1.4,
+                30,
+                y)
+            roledescription.draw(this.showflag,this.role);
+        }
+    }
 
     //今のフェーズ情報
     if (!elements["phase"]) {
@@ -304,7 +320,8 @@ function drawStatus(message) {
                     100,
                     x,
                     y,
-                    button_click
+                    button_click,
+                    role_mouseover
                 )
                 elements[key] = player
             }
