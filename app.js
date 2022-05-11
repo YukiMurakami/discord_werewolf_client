@@ -233,12 +233,15 @@ function drawStatus(message) {
     let buttons = document.getElementById("buttons")
 
     function button_click(e) {
-        sendData(
-            {
-                "message": this.message,
-                "discord_id": infos["discord_id"]
-            }
-        )
+        let confirm = window.confirm(this.confirm_message);
+        if(confirm){
+            sendData(
+                {
+                    "message": this.message,
+                    "discord_id": infos["discord_id"]
+                }
+            )
+        }
     }
 
     //今のフェーズ情報
@@ -550,6 +553,16 @@ function drawSetting() {
                 }
                 infos["roleset_open"] = false
                 elements["rolemenu"].draw(infos["roleset_open"])
+            }
+        } else if (this.message == "game_start"){
+            let confirm = window.confirm("ゲームを開始しますか？")
+            if(confirm){
+                sendData(
+                    {
+                        "message": this.message,
+                        "discord_id": infos["discord_id"]
+                    }
+                )
             }
         } else {
             sendData(

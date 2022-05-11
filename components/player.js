@@ -106,7 +106,7 @@ export class Player {
 
         this.element.style.left = this.x.toString() + "px"
         this.element.style.top = this.y.toString() + "px"
-        
+
         this.element.style.borderColor = this.participateColor
         if (!voice_on) {
             this.element.style.borderColor = this.outColor
@@ -165,21 +165,43 @@ export class Player {
         for (let j=0;j<actions.length;j++) {
             let action = actions[j]
             let div = action.split(":")
+            let playername = players[this.index]["name"] + "さん "
             let dic = {
-                "vote": "投票",
-                "attack": "噛む",
-                "seer": "占う",
-                "bodyguard": "守る",
-                "excution": "遺言完了",
-                "skip": "議論スキップ",
-                "kick": "キック",
+                "vote": {
+                    "title":"投票",
+                    "confirm_message": playername + "に投票します。よろしいですか？"
+                },
+                "attack": {
+                    "title":"噛む",
+                    "confirm_message": playername + "を襲撃します。よろしいですか？"
+                },
+                "seer": {
+                    "title":"占う",
+                    "confirm_message": playername + "を占います。よろしいですか？"
+                },
+                "bodyguard": {
+                    "title":"守る",
+                    "confirm_message": playername + "を護衛します。よろしいですか？"
+                },
+                "excution": {
+                    "title": "遺言完了",
+                    "confirm_message": "遺言完了します。よろしいですか？"
+                },
+                "skip": {
+                    "title": "議論スキップ",
+                    "confirm_message": "議論をスキップします。よろしいですか？"
+                },
+                "kick": {
+                    "title": "キック",
+                    "confirm_message": null
+                },
             }
             if (["vote", "attack", "seer", "bodyguard"].indexOf(div[0]) != -1) {
                 if (div[2] == players[this.index]["discord_id"]) {
                     if (action in this.buttons && this.buttons[action]) {
                     } else {
                         let button = new Button(
-                            dic[div[0]], this.element, this.func, this.width, 0, this.width * 1.2, action
+                            dic[div[0]]["title"], this.element, this.func, this.width, 0, this.width * 1.2, action, dic[div[0]]["confirm_message"]
                         )
                         this.buttons[action] = button
                     }
@@ -192,7 +214,7 @@ export class Player {
                     if (action in this.buttons && this.buttons[action]) {
                     } else {
                         let button = new Button(
-                            dic[div[0]], this.element, this.func, this.width, 0, this.width * 1.2, action
+                            dic[div[0]]["title"], this.element, this.func, this.width, 0, this.width * 1.2, action, dic[div[0]]["confirm_message"]
                         )
                         this.buttons[action] = button
                     }

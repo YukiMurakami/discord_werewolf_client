@@ -1,5 +1,5 @@
 export class Button {
-    constructor(title, parent, func, width, x, y, key) {
+    constructor(title, parent, func, width, x, y, key, confirm_message=null) {
         this.title = title;
         this.parent = parent;
         this.element = null;
@@ -8,6 +8,7 @@ export class Button {
         this.x = x
         this.y = y
         this.key = key
+        this.confirm_message = confirm_message
     }
 
     draw(title="", key="") {
@@ -27,6 +28,7 @@ export class Button {
             } else {
                 this.element.addEventListener("click", {
                     message: this.key,
+                    confirm_message: this.confirm_message,
                     handleEvent: this.func
                 })
             }
@@ -45,6 +47,7 @@ export class Button {
             } else {
                 this.element.removeEventListener("click", {
                     message: last_key,
+                    confirm_message: this.confirm_message,
                     handleEvent: this.func
                 })
             }
@@ -53,6 +56,7 @@ export class Button {
             } else {
                 this.element.addEventListener("click", {
                     message: this.key,
+                    confirm_message: this.confirm_message,
                     handleEvent: this.func
                 })
             }
