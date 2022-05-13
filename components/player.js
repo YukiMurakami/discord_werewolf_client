@@ -2,7 +2,7 @@ import {Button} from "./button.js"
 import { jpnname2engname } from "../config.js";
 
 export class Player {
-    constructor(infos, index, parent, width, x, y, func) {
+    constructor(infos, index, parent, width, x, y, func, role_func) {
         this.infos = infos
         this.index = index
         this.parent = parent;
@@ -11,6 +11,7 @@ export class Player {
         this.x = x
         this.y = y
         this.func = func
+        this.role_func = role_func
 
         this.participateColor = "#ffbb00"
         this.talkingColor = "#33ff33"
@@ -90,6 +91,16 @@ export class Player {
             card.style.height = this.width * 0.3 / 938 * 1125
             card.style.top = this.width * 0.3 / 938 * 1125 * -0.05
             card.style.left = this.width * 0.7
+            card.addEventListener("mouseover", {
+                showflag: true,
+                role:role,
+                handleEvent: this.role_func
+            })
+            card.addEventListener("mouseout", {
+                showflag: false,
+                role:role,
+                handleEvent: this.role_func
+            })
             this.element.append(card)
             this.rolecard = card
 
@@ -106,7 +117,7 @@ export class Player {
 
         this.element.style.left = this.x.toString() + "px"
         this.element.style.top = this.y.toString() + "px"
-        
+
         this.element.style.borderColor = this.participateColor
         if (!voice_on) {
             this.element.style.borderColor = this.outColor
