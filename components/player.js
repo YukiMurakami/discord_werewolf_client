@@ -179,7 +179,8 @@ export class Player {
                     if (action in this.buttons && this.buttons[action]) {
                     } else {
                         let button = new Button(
-                            dic[div[0]], this.element, this.func, this.width, 0, this.width * 1.2, action
+                            dic[div[0]], this.element, this.func, this.width,
+                            0, this.width * 1.2, action, true, this.infos
                         )
                         this.buttons[action] = button
                     }
@@ -192,12 +193,20 @@ export class Player {
                     if (action in this.buttons && this.buttons[action]) {
                     } else {
                         let button = new Button(
-                            dic[div[0]], this.element, this.func, this.width, 0, this.width * 1.2, action
+                            dic[div[0]], this.element, this.func, this.width,
+                            0, this.width * 1.2, action, true, this.infos
                         )
                         this.buttons[action] = button
                     }
                     this.buttons[action].draw()
                     this.buttons[action].element.hidden = false
+                }
+            }
+        }
+        for (let key in this.buttons) {
+            if (this.buttons[key].element.hidden && this.buttons[key].confirm_flag) {
+                if (this.buttons[key].confirm) {
+                    this.buttons[key].confirm.draw(false)
                 }
             }
         }

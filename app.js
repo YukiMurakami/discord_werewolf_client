@@ -82,6 +82,24 @@ function convert_status(status) {
     return status
 }
 
+function is_equal_list(a, b) {
+    if (!a) {
+        return false
+    }
+    if (!b) {
+        return false
+    }
+    if (a.length != b.length) {
+        return false
+    }
+    for (let i=0;i<a.length;i++) {
+        if (a[i] != b[i]) {
+            return false
+        }
+    }
+    return true
+}
+
 function cleanup() {
     let buttons = document.getElementById("tmp")
     while (buttons.firstChild) {
@@ -90,8 +108,8 @@ function cleanup() {
     let now_status = convert_status(client_status)
 
     let reset_elements = false
+    //console.log("change " + infos["now_status"] + " -> " + now_status)
     if (infos["now_status"] != now_status) {
-        //console.log("change " + infos["now_status"] + " -> " + now_status)
         infos["now_status"] = now_status
         reset_elements = true
     }
@@ -101,11 +119,13 @@ function cleanup() {
         for (let i=0;i<players.length;i++) {
             playerids.push(players[i]["discord_id"])
         }
-        if (infos["playerids"] != playerids) {
+        if (!is_equal_list(infos["playerids"], playerids)) {
             infos["playerids"] = playerids
             reset_elements = true
+            //console.log("playerids changed", infos["playerids"], playerids)
         }
     }
+    //console.log("cleanup", reset_elements)
     if (reset_elements) {
         let buttons = document.getElementById("buttons")
         while (buttons.firstChild) {
@@ -459,7 +479,7 @@ function drawResult() {
                 120,
                 count % 3 * 120 + (SCREEN_W - 300) / 2 - 30,
                 (count / 3 | 0) * 40 + (SCREEN_H - 200) / 2 + 160,
-                "result:"
+                "result:", true, infos
             )
             elements["result_button"] = button
         }
@@ -588,14 +608,26 @@ function drawSetting() {
     let count = 0;
     for (let key in dic) {
         if (!elements[dic[key][1]]) {
-            let button = new Button(
-                dic[key][0], buttons, button_click,
-                120,
-                count % 3 * 120 + (SCREEN_W - 300) / 2 - 30,
-                (count / 3 | 0) * 40 + (SCREEN_H - 200) / 2 + 160,
-                key
-            )
-            elements[dic[key][1]] = button
+            //console.log("make new button", key)
+            if (key == "game_start") {
+                let button = new Button(
+                    dic[key][0], buttons, button_click,
+                    120,
+                    count % 3 * 120 + (SCREEN_W - 300) / 2 - 30,
+                    (count / 3 | 0) * 40 + (SCREEN_H - 200) / 2 + 160,
+                    key, true, infos
+                )
+                elements[dic[key][1]] = button
+            } else {
+                let button = new Button(
+                    dic[key][0], buttons, button_click,
+                    120,
+                    count % 3 * 120 + (SCREEN_W - 300) / 2 - 30,
+                    (count / 3 | 0) * 40 + (SCREEN_H - 200) / 2 + 160,
+                    key
+                )
+                elements[dic[key][1]] = button
+            }
         }
         elements[dic[key][1]].draw(dic[key][0], key)
         count += 1;
