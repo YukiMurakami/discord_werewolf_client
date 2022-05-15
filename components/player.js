@@ -139,7 +139,7 @@ export class Player {
 
         let vote_count = ""
         if (players[this.index]["voted_count"] > 0) {
-            vote_count = "(" + players[this.index]["voted_count"].toString() + "票)"
+            vote_count = "<font size='3'>(" + players[this.index]["voted_count"].toString() + ")</font>"
         }
         let already_vote = ""
         if (this.infos["game_status"]["status"] == "VOTE") {
