@@ -492,8 +492,11 @@ function drawResult() {
     let status = infos["game_status"]
     let players = status["players"]
 
-    if (status["result"] == "WEREWOLF" || status["result"] == "FOX") {
+    if (status["result"] == "WEREWOLF") {
         drawBackground("werewolf_win")
+        sound.play("lose", infos, "first")
+    } else if (status["result"] == "FOX") {
+        drawBackground("fox_win")
         sound.play("lose", infos, "first")
     } else {
         drawBackground("afternoon")

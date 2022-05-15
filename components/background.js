@@ -33,10 +33,16 @@ export class Background {
             if (this.type == "werewolf_win") {
                 image = "afternoon"
             }
+            if (this.type == "fox_win") {
+                image = "afternoon"
+            }
             this.element.src = "./images/backgrounds/" + image + ".jpg"
             this.cover.style.backgroundColor = "rgba(255,255,255,0.1)"
             if (this.type == "werewolf_win") {
                 this.cover.style.backgroundColor = "rgba(255,0,0,0.5)"
+            }
+            if (this.type == "fox_win") {
+                this.cover.style.backgroundColor = "rgba(255,255,0,0.5)"
             }
         } 
     }
