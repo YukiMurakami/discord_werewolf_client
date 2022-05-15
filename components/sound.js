@@ -24,6 +24,7 @@ export class Volume {
             this.element.max = 1
             this.element.step = 0.1
             this.element.value = this.infos["volume"]
+            this.sound.set_volume(this.infos["volume"])
             this.parent.appendChild(this.element)
 
             this.element.style.position = "absolute"
