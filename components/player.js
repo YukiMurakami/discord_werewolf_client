@@ -62,6 +62,7 @@ export class Player {
             this.element.style.borderWidth = "4px"
             this.element.style.borderStyle = "solid"
             this.element.style.borderColor = this.participateColor
+            this.element.id = players[this.index]["discord_id"]
 
             let image = document.createElement("img")
             image.src = players[this.index]["avator_url"]

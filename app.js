@@ -10,6 +10,7 @@ import { RoleDescription } from "./components/role_description.js";
 import { Voice } from "./components/voice.js";
 import { config, jpnname2engname } from "./config.js";
 import { Sound, Volume } from "./components/sound.js";
+import { VoteShow } from "./components/vote_show.js";
 
 // 画面サイズ
 // const SCREEN_W = document.documentElement.clientWidth;
@@ -374,6 +375,38 @@ function drawStatus(message) {
         elements["explain"] = explain
     }
     elements["explain"].draw(infos)
+
+    //投票履歴
+    let vote_result = getVoteLog()
+    let count = 0
+    for (let key in vote_result) {
+        if (!elements[key]) {
+            let phase = new VoteShow(
+                key, buttons, SCREEN_W * 0.05, SCREEN_W * 0.946,
+                20 + SCREEN_W * 0.05 / 356 * 122 * count, vote_result[key]
+            )
+            elements[key] = phase
+        }
+        elements[key].draw(key, vote_result[key])
+        count += 1
+    }
+}
+
+function getVoteLog() {
+    let result = {}
+    let logs = infos["game_status"]["log"]
+    for (let key in logs) {
+        if (key.indexOf("VOTE") != -1) {
+            let day = key.split("-")[0]
+            let count = key.split("-")[2]
+            let k = "投票" + day + "日目"
+            if (count != "0") {
+                k = day + "日目" + "決戦" + count
+            }
+            result[k] = logs[key]
+        }
+    }
+    return result
 }
 
 function drawNight() {
