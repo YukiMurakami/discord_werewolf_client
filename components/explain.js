@@ -80,7 +80,7 @@ export class Explain {
                 }
             }
             if (name == "") {
-                message_str += "<br>昨晩は誰も襲われませんでした。"
+                message_str += "<br>朝になると、誰も死亡していませんでした。"
             } else {
                 message_str += "<br>朝になると" + name + "が無惨な姿で発見されました。"
             }
