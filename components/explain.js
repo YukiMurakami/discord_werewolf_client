@@ -20,6 +20,18 @@ export class Explain {
             let name = discord_id2name(excution_id, players)
             message_str = "本日処刑されるのは" + name + "さんです。遺言をどうぞ。"
         }
+        if (status["status"] == "VOTE") {
+            let vote_count = status["vote"]
+            if (vote_count == 0) {
+                message_str = "今日も誰か一人を処刑する時間が来ました。一人ずつ順番に軽く意見を述べた上で投票を行ってください。"
+            } else if (vote_count > 0) {
+                let vote_targets = []
+                for (let i=0;i<status["vote_candidates"].length;i++) {
+                    vote_targets.push(discord_id2name(status["vote_candidates"][i], players) + "さん")
+                }
+                message_str = vote_targets.join("、") + "が最多得票となったので決選投票を行います。好きな順で３０秒程度ずつ弁明をしていただき、その後再度投票を行ってください。決選投票は終了後一斉に開示します。"
+            }
+        }
         let action_results = status["action_results"]
         for (let i = 0; i < action_results.length; i++) {
             let div = action_results[i].split(":")
