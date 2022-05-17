@@ -380,14 +380,20 @@ function drawStatus(message) {
     let vote_result = getVoteLog()
     let count = 0
     for (let key in vote_result) {
+        let result = []
+        for (let i=0;i<vote_result[key].length;i++) {
+            if (vote_result[key][i].indexOf("vote:") == 0) {
+                result.push(vote_result[key][i])
+            }
+        }
         if (!elements[key]) {
             let phase = new VoteShow(
                 key, buttons, SCREEN_W * 0.05, SCREEN_W * 0.946,
-                20 + SCREEN_W * 0.05 / 356 * 122 * count, vote_result[key]
+                20 + SCREEN_W * 0.05 / 356 * 122 * count, result
             )
             elements[key] = phase
         }
-        elements[key].draw(key, vote_result[key])
+        elements[key].draw(key, result)
         count += 1
     }
 }
@@ -483,6 +489,7 @@ function drawVote() {
     drawStatus(status["day"].toString() + "日目夕")
     sound.play("vote_bell", infos, "first")
     drawCoButtons()
+    drawHandButton()
 }
 
 function drawExcution() {
