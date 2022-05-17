@@ -25,6 +25,8 @@ export class Player {
         this.buttons = {}
 
         this.role_icons = []
+        this.hand = null;
+        this.counter = null;
     }
 
     draw(x, y) {
@@ -85,6 +87,26 @@ export class Player {
             death.style.borderRadius = "50%";
             this.element.appendChild(death)
             this.death = death
+
+            let hand = document.createElement("img")
+            hand.src = "./images/ui/hand.png"
+            hand.style.width = this.width * 0.8
+            hand.style.position = "absolute"
+            hand.style.left = this.width * -0.2
+            hand.style.top = this.width * -0.3
+            hand.style.borderRadius = "50%";
+            this.element.appendChild(hand)
+            this.hand = hand
+            let counter = document.createElement("div")
+            counter.innerHTML = "12"
+            counter.style.textAlign = "center"
+            counter.style.fontSize = "150%"
+            counter.style.color = "#000000"
+            counter.style.position = "absolute"
+            counter.style.width = this.width * 0.3
+            counter.style.top = this.width * 0.05
+            this.element.appendChild(counter)
+            this.counter = counter
 
             let card = document.createElement("div")
             card.style.backgroundImage = "url(" + "./images/cards/" + role + ".png" + ")"
@@ -171,7 +193,15 @@ export class Player {
         if (players[this.index]["disconnect"]) {
             this.mes.style.color = this.disconnectColor
         }
-
+        let hand = players[this.index]["hand"]
+        if (hand != null) {
+            this.hand.hidden = false
+            this.counter.hidden = false
+            this.counter.innerHTML = hand.toString()
+        } else {
+            this.hand.hidden = true
+            this.counter.hidden = true
+        }
         let actions = my_player["actions"]
         for (let key in this.buttons) {
             this.buttons[key].element.hidden = true

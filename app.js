@@ -474,6 +474,7 @@ function drawAfternoon() {
         sound.play("craw", infos, "")
     }
     drawCoButtons()
+    drawHandButton()
 }
 
 function drawVote() {
@@ -544,6 +545,59 @@ function drawResult() {
     }
 }
 
+function drawHandButton() {
+    function button_click(e) {
+        sendData(
+            {
+                "message": this.message,
+                "discord_id": infos["discord_id"]
+            }
+        )
+    }
+    for (let key in elements) {
+        if (key.indexOf("hand:") == 0) {
+            if (elements[key]) {
+                elements[key].element.hidden = true
+            }
+        }
+    }
+    let players = infos["game_status"]["players"]
+    for (let i=0;i<players.length;i++) {
+        if (players[i]["discord_id"] == infos["discord_id"]) {
+            let actions = players[i]["actions"]
+            let count = 0
+            for (let j=0;j<actions.length;j++) {
+                let button_key = ""
+                let title = ""
+                if (actions[j].indexOf("hand_raise:") == 0) {
+                    button_key = "hand:"
+                    title = "手を挙げる"
+                }
+                if (actions[j].indexOf("hand_down:") == 0) {
+                    button_key = "hand:"
+                    title = "手を下げる"
+                }
+                if (button_key == "") {
+                    continue
+                }
+                if (!elements[button_key]) {
+                    let button = new Button(
+                        title, buttons, button_click,
+                        120,
+                        (SCREEN_W - 300) / 2 - 30 - 120 - 120 * Math.floor(count / 4),
+                        (SCREEN_H - 200) / 2 - 30 + (count % 4) * 40,
+                        actions[j]
+                    )
+                    elements[button_key] = button
+                }
+                elements[button_key].draw(title, actions[j])
+                elements[button_key].element.hidden = false
+                count += 1;
+            }
+        }
+    }
+}
+
 function drawCoButtons() {
     function button_click(e) {
         sendData(
@@ -555,7 +609,9 @@ function drawCoButtons() {
     }
     for (let key in elements) {
         if (key.indexOf("co:") == 0) {
-            elements[key].element.hidden = true
+            if (elements[key]) {
+                elements[key].element.hidden = true
+            }
         }
     }
     let players = infos["game_status"]["players"]
