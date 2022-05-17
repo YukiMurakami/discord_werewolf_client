@@ -66,8 +66,14 @@ export class Rule {
             second_str = "0" + status["second"].toString()
         }
         let rule_str = "<font size='6'>" + minute_str + ":" + second_str + "</font>"
+        let live_count = 0
+        for (let i=0;i<players.length;i++) {
+            if (players[i]["live"]) {
+                live_count += 1
+            }
+        }
         if (!only_time) {
-            rule_str += "<br>人数：" + players.length.toString() + "/" + role_n.toString()
+            rule_str += "<br>人数：" + live_count + "/" + role_n.toString()
             rule_str += "<br>役職：" + role_str
             rule_str += "<br>初日占い：" + first_seer_str
             rule_str += "<br>連続ガード：" + guard_str
