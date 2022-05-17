@@ -23,6 +23,8 @@ export class Player {
         this.rolecard = null;
         this.mes = null;
         this.buttons = {}
+
+        this.role_icons = []
     }
 
     draw(x, y) {
@@ -221,6 +223,31 @@ export class Player {
                     this.buttons[key].confirm.draw(false)
                 }
             }
+        }
+
+        if (players[this.index]["co_list"].length != this.role_icons.length) {
+            for (let i=0;i<this.role_icons.length;i++) {
+                this.role_icons[i].remove()
+            }
+            this.role_icons = []
+            for (let i=0;i<players[this.index]["co_list"].length;i++) {
+                let icon = document.createElement("img")
+                let ratio = 0.4
+                if (players[this.index]["co_list"].length > 3) {
+                    ratio = ratio * 3 / players[this.index]["co_list"].length
+                }
+                icon.style.width = this.width * ratio
+                icon.style.height = this.width * ratio
+                icon.style.position = "absolute"
+                icon.style.top = this.width * ratio * this.role_icons.length
+                icon.style.left = this.width * ratio * -1
+                this.element.appendChild(icon)
+                this.role_icons.push(icon)
+            }
+        }
+        for (let i=0;i<this.role_icons.length;i++) {
+            let role_name = players[this.index]["co_list"][i]
+            this.role_icons[i].src = "./images/icons/" + role_name + ".png"
         }
     }
 }

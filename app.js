@@ -8,7 +8,7 @@ import { Explain } from "./components/explain.js";
 import { RoleMenu } from "./components/role_menu.js";
 import { RoleDescription } from "./components/role_description.js";
 import { Voice } from "./components/voice.js";
-import { config, jpnname2engname } from "./config.js";
+import { config, jpnname2engname, rolename2token } from "./config.js";
 import { Sound, Volume } from "./components/sound.js";
 import { VoteShow } from "./components/vote_show.js";
 
@@ -473,6 +473,7 @@ function drawAfternoon() {
     if (minute == 0 && second == 10) {
         sound.play("craw", infos, "")
     }
+    drawCoButtons()
 }
 
 function drawVote() {
@@ -480,12 +481,14 @@ function drawVote() {
     let status = infos["game_status"]
     drawStatus(status["day"].toString() + "日目夕")
     sound.play("vote_bell", infos, "first")
+    drawCoButtons()
 }
 
 function drawExcution() {
     drawBackground("evening")
     let status = infos["game_status"]
     drawStatus(status["day"].toString() + "日目夕処刑")
+    drawCoButtons()
 }
 
 function drawResult() {
@@ -538,6 +541,58 @@ function drawResult() {
         }
         elements["result_button"].draw()
     } else {
+    }
+}
+
+function drawCoButtons() {
+    function button_click(e) {
+        sendData(
+            {
+                "message": this.message,
+                "discord_id": infos["discord_id"]
+            }
+        )
+    }
+    for (let key in elements) {
+        if (key.indexOf("co:") == 0) {
+            elements[key].element.hidden = true
+        }
+    }
+    let players = infos["game_status"]["players"]
+    for (let i=0;i<players.length;i++) {
+        if (players[i]["discord_id"] == infos["discord_id"]) {
+            let actions = players[i]["actions"]
+            let count = 0
+            for (let j=0;j<actions.length;j++) {
+                let button_key = ""
+                let title = ""
+                if (actions[j].indexOf("co:") == 0) {
+                    button_key = actions[j]
+                    title = "CO"
+                }
+                if (actions[j].indexOf("noco:") == 0) {
+                    button_key = actions[j].substring(2)
+                    title = "CO撤回"
+                }
+                if (button_key == "") {
+                    continue
+                }
+                let role = rolename2token(actions[j].split(":")[1])
+                if (!elements[button_key]) {
+                    let button = new Button(
+                        role + title, buttons, button_click,
+                        120,
+                        (SCREEN_W - 300) / 2 + 300 + 30 + 120 * Math.floor(count / 4),
+                        (SCREEN_H - 200) / 2 - 30 + (count % 4) * 40,
+                        actions[j], true, infos
+                    )
+                    elements[button_key] = button
+                }
+                elements[button_key].draw(role + title, actions[j])
+                elements[button_key].element.hidden = false
+                count += 1;
+            }
+        }
     }
 }
 
