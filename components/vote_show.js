@@ -58,7 +58,12 @@ export class VoteShow {
             this.mes.style.fontSize = Number(this.element.clientHeight / 45 * 100 * 0.1).toString() + "%"
         } else {
             this.mes.style.fontSize = Number(this.element.clientHeight / 45 * 100).toString() + "%"
-        }   
+        }
+        if (this.result.length <= 0) {
+            this.element.hidden = true
+        } else {
+            this.element.hidden = false
+        }
     }
 
     addlistener(type, handleEvent, arg = {}, option = null) {
