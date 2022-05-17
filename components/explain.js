@@ -43,7 +43,10 @@ export class Explain {
                 } else {
                     result = "人狼ではない"
                 }
-                message_str += "<br>占い結果、" + name + "さんは" + result + "です。"
+                if (message_str != "") {
+                    message_str += "<br>"
+                }
+                message_str += "占い結果、" + name + "さんは" + result + "です。"
             }
             if (div[0] == "medium") {
                 let name = discord_id2name(div[2], players)
@@ -53,16 +56,25 @@ export class Explain {
                 } else {
                     result = "人狼ではない"
                 }
-                message_str += "<br>霊媒結果、" + name + "さんは" + result + "です。"
+                if (message_str != "") {
+                    message_str += "<br>"
+                }
+                message_str += "霊媒結果、" + name + "さんは" + result + "です。"
             }
             if (div[0] == "attack") {
                 let src_name = discord_id2name(div[1], players)
                 let dist_name = discord_id2name(div[2], players)
-                message_str += "<br>" + src_name + "さんが" + dist_name + "さんを噛みます。"
+                if (message_str != "") {
+                    message_str += "<br>"
+                }
+                message_str += src_name + "さんが" + dist_name + "さんを噛みます。"
             }
             if (div[0] == "bodyguard") {
                 let dist_name = discord_id2name(div[2], players)
-                message_str += "<br>" + dist_name + "さんを守ります。"
+                if (message_str != "") {
+                    message_str += "<br>"
+                }
+                message_str += dist_name + "さんを守ります。"
             }
         }
         if (status["status"] == "MORNING") {
@@ -79,10 +91,13 @@ export class Explain {
                     }
                 }
             }
+            if (message_str != "") {
+                message_str += "<br>"
+            }
             if (name == "") {
-                message_str += "<br>朝になると、誰も死亡していませんでした。"
+                message_str += "朝になると、誰も死亡していませんでした。"
             } else {
-                message_str += "<br>朝になると" + name + "が無惨な姿で発見されました。"
+                message_str += "朝になると" + name + "が無惨な姿で発見されました。"
             }
         }
         
@@ -100,13 +115,13 @@ export class Explain {
             this.element.style.borderStyle = "solid"
             this.element.style.borderColor = "#eeeeee"
 
-            this.mes = document.createElement("p")
+            this.mes = document.createElement("div")
             this.mes.style.fontSize = "100%"
             this.mes.style.color = "#ffffff"
             this.mes.style.position = "absolute"
-            this.mes.style.width = this.width
+            this.mes.style.width = this.width * 0.95
             this.mes.style.color = "#eeeeee"
-            this.mes.style.padding = "0 0 0 10"
+            this.mes.style.padding = "10 10 10 10"
             this.element.appendChild(this.mes)
         }
         this.mes.innerHTML = message_str

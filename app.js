@@ -14,7 +14,7 @@ import { VoteShow } from "./components/vote_show.js";
 
 // 画面サイズ
 // const SCREEN_W = document.documentElement.clientWidth;
-const SCREEN_H = document.documentElement.clientHeight;
+const SCREEN_H = document.documentElement.clientHeight - 20;
 const SCREEN_W = SCREEN_H * 16 / 9;
 
 const URI = config["URI"]
@@ -218,7 +218,7 @@ function drawAccountSelect() {
             account["discord_id"],
             buttons,
             account_select_button_click,
-            100, 120 * (i % 7 + 2), 200 + 140 * parseInt(i / 7, 10)
+            100, (SCREEN_W - 820) / 2 + 120 * (i % 7), 200 + 140 * parseInt(i / 7, 10)
         )
         account_div.draw()
     }
@@ -312,7 +312,7 @@ function drawStatus(message) {
     let keys = []
     if (status["status"] != "ROLE_CHECK") {
         let radiusW = SCREEN_W * 0.4
-        let radiusH = SCREEN_H * 0.4
+        let radiusH = SCREEN_H * 0.4 - 20
         let playerC = players.length
         for (let i=0;i<playerC;i++) {
             let sin = Math.sin(Math.PI * 2 / playerC * i)
@@ -330,7 +330,7 @@ function drawStatus(message) {
                 adjust = 0
             }
             let x = SCREEN_W / 2 - 52 + radiusW * Math.cos(Math.PI * 2 / playerC * i + adjust)
-            let y = SCREEN_H / 2 - 62 + radiusH * Math.sin(Math.PI * 2 / playerC * i + adjust)
+            let y = SCREEN_H / 2 - 62 + radiusH * Math.sin(Math.PI * 2 / playerC * i + adjust) - 10
             let key = "player" + players[i]["discord_id"]
             keys.push(key)
             if (key in elements && elements[key]) {
