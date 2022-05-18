@@ -72,6 +72,9 @@ export class Confirmation {
         if (action == "game_start") {
             message_str = "ゲームを開始していいですか？"
         }
+        if (action == "logout") {
+            message_str = "ゲームから退席しますか？"
+        }
         if (action == "co") {
             message_str = rolename2token(div[1]) + "COしますか？"
         }
