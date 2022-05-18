@@ -11,6 +11,7 @@ import { Voice } from "./components/voice.js";
 import { config, jpnname2engname, rolename2token } from "./config.js";
 import { Sound, Volume } from "./components/sound.js";
 import { VoteShow } from "./components/vote_show.js";
+import { LogShow } from "./components/log_show.js";
 
 // 画面サイズ
 // const SCREEN_W = document.documentElement.clientWidth;
@@ -395,6 +396,30 @@ function drawStatus(message) {
         }
         elements[key].draw(key, result)
         count += 1
+    }
+
+    //死亡時 or ゲーム終了時はログ表示
+    let showflag = false
+    for (let i=0;i<players.length;i++) {
+        if (players[i]["discord_id"] == infos["discord_id"]) {
+            if (!players[i]["live"]) {
+                showflag = true
+            }
+        }
+    }
+    if (status["status"] == "RESULT") {
+        showflag = true
+    }
+    if (showflag) {
+        let key = "logshow"
+        if (!elements[key]) {
+            let logshow = new LogShow(
+                "ログ表示", buttons, SCREEN_W * 0.05, SCREEN_W * 0.02, SCREEN_H - SCREEN_W * 0.05 / 356 * 122 - 20,
+                status["log"], SCREEN_W, SCREEN_H, infos
+            )
+            elements[key] = logshow
+        }
+        elements[key].draw("ログ表示", status["log"], infos)
     }
 }
 

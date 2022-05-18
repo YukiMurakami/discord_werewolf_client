@@ -45,3 +45,15 @@
 .card_hover .ura{
     transform: rotateY(0);
 }
+
+th,td {
+    border: solid 1px;  /* 枠線指定 */
+    padding: 3px;      /* 余白指定 */
+    color: #ffffff;
+    text-align: center;
+    font-size: 12px;
+}
+ 
+table {
+    border-collapse:  collapse; /* セルの線を重ねる */
+}
