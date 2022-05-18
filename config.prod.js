@@ -97,8 +97,8 @@ export function engname2description(rolename) {
             "name": "妖狐",
             "team":team["fox"],
             "victory_condition":victory_condition["fox"],
-            "description":"占い師に占われると死ぬが、人狼に襲撃されても死なない。最後まで生き残ろう。",
-        },
+            "description":"占い師に占われると死ぬが、人狼に襲撃されても死なない。また人間にも人狼にもカウントされない。<br>気付かれずに最後まで生き残ろう。",
+        }
     }
     return dic[rolename]
 }

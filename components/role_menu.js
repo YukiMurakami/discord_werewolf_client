@@ -25,19 +25,19 @@ class RoleSetter {
             card.style.position = "absolute"
             card.style.width = this.width
             card.style.height = this.width / 938 * 1125
-            card.style.top = 40
+            card.style.top = 10
             card.style.left = this.x
             this.parent.appendChild(card)
             this.element = card
 
             let up = new Button(
-                "+1", this.parent, this.func,
-                80, 9 + this.x, 10, "+" + this.rolename
+                    "＋１", this.parent, this.func,
+                    80, 9 + this.x, 10 + 124, "+" + this.rolename
             )
             this.up = up
 
             let down = new Button(
-                "-1", this.parent, this.func,
+                    "－１", this.parent, this.func,
                 80, 9 + this.x, 10 + 154, "-" + this.rolename
             )
             this.down = down

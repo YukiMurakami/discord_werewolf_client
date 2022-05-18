@@ -29,13 +29,12 @@ export class Button {
                     handleEvent: this.func
                 })
             }
-        } else {          
-            //console.log(this.confirm)  
+        } else {
+            //console.log(this.confirm)s
             this.element.addEventListener("click", {
                 message: this.confirm,
                 handleEvent: this.click_confirm_show
             })
-            
         }
     }
 
