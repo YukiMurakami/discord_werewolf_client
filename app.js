@@ -8,13 +8,13 @@ import { Explain } from "./components/explain.js";
 import { RoleMenu } from "./components/role_menu.js";
 import { RoleDescription } from "./components/role_description.js";
 import { Voice } from "./components/voice.js";
-import { config, jpnname2engname } from "./config.js";
+import { config, jpnname2engname, rolename2token } from "./config.js";
 import { Sound, Volume } from "./components/sound.js";
 import { VoteShow } from "./components/vote_show.js";
 
 // 画面サイズ
 // const SCREEN_W = document.documentElement.clientWidth;
-const SCREEN_H = document.documentElement.clientHeight;
+const SCREEN_H = document.documentElement.clientHeight - 20;
 const SCREEN_W = SCREEN_H * 16 / 9;
 
 const URI = config["URI"]
@@ -218,7 +218,7 @@ function drawAccountSelect() {
             account["discord_id"],
             buttons,
             account_select_button_click,
-            100, 120 * (i % 7 + 2), 200 + 140 * parseInt(i / 7, 10)
+            100, (SCREEN_W - 820) / 2 + 120 * (i % 7), 200 + 140 * parseInt(i / 7, 10)
         )
         account_div.draw()
     }
@@ -312,7 +312,7 @@ function drawStatus(message) {
     let keys = []
     if (status["status"] != "ROLE_CHECK") {
         let radiusW = SCREEN_W * 0.4
-        let radiusH = SCREEN_H * 0.4
+        let radiusH = SCREEN_H * 0.4 - 20
         let playerC = players.length
         for (let i=0;i<playerC;i++) {
             let sin = Math.sin(Math.PI * 2 / playerC * i)
@@ -330,7 +330,7 @@ function drawStatus(message) {
                 adjust = 0
             }
             let x = SCREEN_W / 2 - 52 + radiusW * Math.cos(Math.PI * 2 / playerC * i + adjust)
-            let y = SCREEN_H / 2 - 62 + radiusH * Math.sin(Math.PI * 2 / playerC * i + adjust)
+            let y = SCREEN_H / 2 - 62 + radiusH * Math.sin(Math.PI * 2 / playerC * i + adjust) - 10
             let key = "player" + players[i]["discord_id"]
             keys.push(key)
             if (key in elements && elements[key]) {
@@ -380,14 +380,20 @@ function drawStatus(message) {
     let vote_result = getVoteLog()
     let count = 0
     for (let key in vote_result) {
+        let result = []
+        for (let i=0;i<vote_result[key].length;i++) {
+            if (vote_result[key][i].indexOf("vote:") == 0) {
+                result.push(vote_result[key][i])
+            }
+        }
         if (!elements[key]) {
             let phase = new VoteShow(
                 key, buttons, SCREEN_W * 0.05, SCREEN_W * 0.946,
-                20 + SCREEN_W * 0.05 / 356 * 122 * count, vote_result[key]
+                20 + SCREEN_W * 0.05 / 356 * 122 * count, result
             )
             elements[key] = phase
         }
-        elements[key].draw(key, vote_result[key])
+        elements[key].draw(key, result)
         count += 1
     }
 }
@@ -473,6 +479,8 @@ function drawAfternoon() {
     if (minute == 0 && second == 10) {
         sound.play("craw", infos, "")
     }
+    drawCoButtons()
+    drawHandButton()
 }
 
 function drawVote() {
@@ -480,12 +488,15 @@ function drawVote() {
     let status = infos["game_status"]
     drawStatus(status["day"].toString() + "日目夕")
     sound.play("vote_bell", infos, "first")
+    drawCoButtons()
+    drawHandButton()
 }
 
 function drawExcution() {
     drawBackground("evening")
     let status = infos["game_status"]
     drawStatus(status["day"].toString() + "日目夕処刑")
+    drawCoButtons()
 }
 
 function drawResult() {
@@ -538,6 +549,113 @@ function drawResult() {
         }
         elements["result_button"].draw()
     } else {
+    }
+}
+
+function drawHandButton() {
+    function button_click(e) {
+        sendData(
+            {
+                "message": this.message,
+                "discord_id": infos["discord_id"]
+            }
+        )
+    }
+    for (let key in elements) {
+        if (key.indexOf("hand:") == 0) {
+            if (elements[key]) {
+                elements[key].element.hidden = true
+            }
+        }
+    }
+    let players = infos["game_status"]["players"]
+    for (let i=0;i<players.length;i++) {
+        if (players[i]["discord_id"] == infos["discord_id"]) {
+            let actions = players[i]["actions"]
+            let count = 0
+            for (let j=0;j<actions.length;j++) {
+                let button_key = ""
+                let title = ""
+                if (actions[j].indexOf("hand_raise:") == 0) {
+                    button_key = "hand:"
+                    title = "手を挙げる"
+                }
+                if (actions[j].indexOf("hand_down:") == 0) {
+                    button_key = "hand:"
+                    title = "手を下げる"
+                }
+                if (button_key == "") {
+                    continue
+                }
+                if (!elements[button_key]) {
+                    let button = new Button(
+                        title, buttons, button_click,
+                        120,
+                        (SCREEN_W - 300) / 2 - 30 - 120 - 120 * Math.floor(count / 4),
+                        (SCREEN_H - 200) / 2 - 30 + (count % 4) * 40,
+                        actions[j]
+                    )
+                    elements[button_key] = button
+                }
+                elements[button_key].draw(title, actions[j])
+                elements[button_key].element.hidden = false
+                count += 1;
+            }
+        }
+    }
+}
+
+function drawCoButtons() {
+    function button_click(e) {
+        sendData(
+            {
+                "message": this.message,
+                "discord_id": infos["discord_id"]
+            }
+        )
+    }
+    for (let key in elements) {
+        if (key.indexOf("co:") == 0) {
+            if (elements[key]) {
+                elements[key].element.hidden = true
+            }
+        }
+    }
+    let players = infos["game_status"]["players"]
+    for (let i=0;i<players.length;i++) {
+        if (players[i]["discord_id"] == infos["discord_id"]) {
+            let actions = players[i]["actions"]
+            let count = 0
+            for (let j=0;j<actions.length;j++) {
+                let button_key = ""
+                let title = ""
+                if (actions[j].indexOf("co:") == 0) {
+                    button_key = actions[j]
+                    title = "CO"
+                }
+                if (actions[j].indexOf("noco:") == 0) {
+                    button_key = actions[j].substring(2)
+                    title = "CO撤回"
+                }
+                if (button_key == "") {
+                    continue
+                }
+                let role = rolename2token(actions[j].split(":")[1])
+                if (!elements[button_key]) {
+                    let button = new Button(
+                        role + title, buttons, button_click,
+                        120,
+                        (SCREEN_W - 300) / 2 + 300 + 30 + 120 * Math.floor(count / 4),
+                        (SCREEN_H - 200) / 2 - 30 + (count % 4) * 40,
+                        actions[j], true, infos
+                    )
+                    elements[button_key] = button
+                }
+                elements[button_key].draw(role + title, actions[j])
+                elements[button_key].element.hidden = false
+                count += 1;
+            }
+        }
     }
 }
 

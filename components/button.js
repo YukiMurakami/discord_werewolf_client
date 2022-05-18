@@ -13,12 +13,30 @@ export class Button {
         this.confirm_flag = confirm_flag
         this.confirm = null;
         this.infos = infos
+
+        this.counter = 0;
+        this.eventlist = [];
     }
 
     click_confirm_show(e) {
         this.message.draw(true)
     }
 
+    addlistener(type, handleEvent, arg = {}, option = null) {
+        this.counter++;
+        const eventlistner = {handleEvent, ...arg};
+        const array = [type, eventlistner, option];
+        this.eventlist[this.counter] = array;
+        this.element.addEventListener(type, eventlistner, option);
+    }
+
+    removelistener(num) {
+        const type = this.eventlist[num][0]
+        const eventlistner = this.eventlist[num][1]
+        const option = this.eventlist[num][2]
+        this.element.removeEventListener(type, eventlistner, option);
+    }
+/*
     add_eventlistener(key) {
         if (!this.confirm_flag) {
             if (!key) {
@@ -55,7 +73,7 @@ export class Button {
             })
         }
     }
-
+*/
     draw(title="", key="") {
         //console.log(this.confirm, this.title, this.element)
         if (title != "") {
@@ -86,15 +104,40 @@ export class Button {
                     this.infos, this.func, this.element
                 )
             }
-
-            this.add_eventlistener(this.key)
+            if (!this.confirm_flag) {
+                if (!this.key) {
+                    this.addlistener("click", this.func)
+                } else {
+                    this.addlistener("click", this.func, {message: this.key})
+                }
+            } else {
+                this.addlistener("click", this.click_confirm_show, {message: this.confirm})
+            }
         }
-        this.element.value = this.title
         if (this.key != last_key) {
             // イベントを変更
-            this.remove_eventlistener(last_key)
-            this.add_eventlistener(this.key)
+            console.log("change", last_key, this.key)
+            this.removelistener(this.counter)
+            if (!this.confirm_flag) {
+                if (!this.key) {
+                    this.addlistener("click", this.func)
+                } else {
+                    this.addlistener("click", this.func, {message: this.key})
+                }
+            } else {
+                this.confirm.remove()
+                this.confirm = new Confirmation(
+                    this.key,
+                    this.parent,
+                    this.width * 2.7,
+                    parseInt(this.element.style.left) + this.width * -0.9,
+                    parseInt(this.element.style.top) - this.width * 1.1,
+                    this.infos, this.func, this.element
+                )
+                this.addlistener("click", this.click_confirm_show, {message: this.confirm})
+            }
         }
+        this.element.value = this.title
         if (this.confirm_flag) {
             this.confirm.draw(this.confirm.showflag)
         }

@@ -23,6 +23,10 @@ export class Player {
         this.rolecard = null;
         this.mes = null;
         this.buttons = {}
+
+        this.role_icons = []
+        this.hand = null;
+        this.counter = null;
     }
 
     draw(x, y) {
@@ -83,6 +87,26 @@ export class Player {
             death.style.borderRadius = "50%";
             this.element.appendChild(death)
             this.death = death
+
+            let hand = document.createElement("img")
+            hand.src = "./images/ui/hand.png"
+            hand.style.width = this.width * 0.8
+            hand.style.position = "absolute"
+            hand.style.left = this.width * -0.2
+            hand.style.top = this.width * -0.3
+            hand.style.borderRadius = "50%";
+            this.element.appendChild(hand)
+            this.hand = hand
+            let counter = document.createElement("div")
+            counter.innerHTML = "12"
+            counter.style.textAlign = "center"
+            counter.style.fontSize = "150%"
+            counter.style.color = "#000000"
+            counter.style.position = "absolute"
+            counter.style.width = this.width * 0.3
+            counter.style.top = this.width * 0.05
+            this.element.appendChild(counter)
+            this.counter = counter
 
             let card = document.createElement("div")
             card.style.backgroundImage = "url(" + "./images/cards/" + role + ".png" + ")"
@@ -169,7 +193,15 @@ export class Player {
         if (players[this.index]["disconnect"]) {
             this.mes.style.color = this.disconnectColor
         }
-
+        let hand = players[this.index]["hand"]
+        if (hand != null) {
+            this.hand.hidden = false
+            this.counter.hidden = false
+            this.counter.innerHTML = hand.toString()
+        } else {
+            this.hand.hidden = true
+            this.counter.hidden = true
+        }
         let actions = my_player["actions"]
         for (let key in this.buttons) {
             this.buttons[key].element.hidden = true
@@ -221,6 +253,31 @@ export class Player {
                     this.buttons[key].confirm.draw(false)
                 }
             }
+        }
+
+        if (players[this.index]["co_list"].length != this.role_icons.length) {
+            for (let i=0;i<this.role_icons.length;i++) {
+                this.role_icons[i].remove()
+            }
+            this.role_icons = []
+            for (let i=0;i<players[this.index]["co_list"].length;i++) {
+                let icon = document.createElement("img")
+                let ratio = 0.4
+                if (players[this.index]["co_list"].length > 3) {
+                    ratio = ratio * 3 / players[this.index]["co_list"].length
+                }
+                icon.style.width = this.width * ratio
+                icon.style.height = this.width * ratio
+                icon.style.position = "absolute"
+                icon.style.top = this.width * ratio * this.role_icons.length
+                icon.style.left = this.width * ratio * -1
+                this.element.appendChild(icon)
+                this.role_icons.push(icon)
+            }
+        }
+        for (let i=0;i<this.role_icons.length;i++) {
+            let role_name = players[this.index]["co_list"][i]
+            this.role_icons[i].src = "./images/icons/" + role_name + ".png"
         }
     }
 }

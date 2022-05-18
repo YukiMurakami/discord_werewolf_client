@@ -1,4 +1,5 @@
 import {Button} from "./button.js"
+import {rolename2token} from "../config.js"
 
 export class Confirmation {
     constructor(action, parent, width, x, y, infos, func, button) {
@@ -16,12 +17,23 @@ export class Confirmation {
         this.button = button
         this.showflag = false
     }
+    
+    remove() {
+        if (this.ok_button) {
+            this.ok_button.element.remove()
+        }
+        if (this.ng_button) {
+            this.ng_button.element.remove()
+        }
+        this.element.remove()
+    }
 
     button_click(e) {
         this.message.draw(false)
     }
 
     draw(showflag) {
+        let last_show_flag = this.showflag
         this.showflag = showflag
         let message_str = ""
         let div = this.action.split(":")
@@ -59,6 +71,17 @@ export class Confirmation {
         }
         if (action == "game_start") {
             message_str = "ゲームを開始していいですか？"
+        }
+        if (action == "co") {
+            message_str = rolename2token(div[1]) + "COしますか？"
+        }
+        if (action == "noco") {
+            message_str = rolename2token(div[1]) + "COを撤回しますか？"
+        }
+
+        if (showflag && !last_show_flag) {
+            this.remove()
+            this.element = null;
         }
         
         if (!this.element) {
