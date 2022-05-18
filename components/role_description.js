@@ -57,11 +57,11 @@ export class RoleDescription {
             console.log(this.title)
 
             this.mes = document.createElement("p")
-            this.mes.style.fontSize = "90%"
+            this.mes.style.fontSize = "85%"
             this.mes.style.color = "#ffffff"
             this.mes.style.position = "absolute"
             this.mes.style.width = this.width * 0.95
-            this.mes.style.top = this.width * 0.9 * 0.45
+            this.mes.style.top = this.width * 0.9 * 0.4
             this.mes.style.color = "#eeeeee"
             this.mes.style.padding = "0 0 0 10"
             this.element.appendChild(this.mes)
@@ -70,7 +70,8 @@ export class RoleDescription {
         }
         this.title.innerHTML = role_description["name"]
         this.mes.innerHTML = role_description["description"]
-            + "<br><br>陣営：" + role_description["team"]
+            + "<br>"
+            + "<br>陣営：" + role_description["team"]
             + "<br>勝利条件：" + role_description["victory_condition"]
         if (message_str != "") {
             this.element.hidden = !showflag;
@@ -81,4 +82,3 @@ export class RoleDescription {
         }
     }
 }
-

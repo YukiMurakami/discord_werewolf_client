@@ -35,14 +35,14 @@ export function jpnname2engname(rolename) {
 
 export function engname2description(rolename) {
     let victory_condition = {
-        "human":"人狼陣営の全滅。",
+        "human":"人狼陣営を全滅させる。",
         "werewolf":"村人陣営と人狼の数が同数になる。",
-        "fox":"いずれかの陣営の勝利条件を満たした時に生き残っている。"
+        "fox":"いずれかの陣営の勝利条件を満たした時に妖狐が生き残っている。"
     }
     let team = {
         "human":"村人陣営",
         "werewolf":"人狼陣営",
-        "fox":"狐陣営"
+        "fox":"妖狐陣営"
     }
     let dic = {
         "villager": {
@@ -53,15 +53,15 @@ export function engname2description(rolename) {
         },
         "werewolf": {
             "name":"人狼",
-            "team":"人狼陣営",
-            "victory_condition":"村人陣営と人狼の数が同数になる。",
+            "team":team["werewolf"],
+            "victory_condition":victory_condition["werewolf"],
             "description":"毎晩仲間の人狼と作戦会議を行い、1人を指定し襲撃を行う。",
         },
         "seer": {
             "name": "占い師",
             "team":team["human"],
             "victory_condition":victory_condition["human"],
-            "description":"毎晩、生存者のうち1人が「人狼」か「人狼以外」かを知ることができる。。",
+            "description":"毎晩、生存者のうち1人が「人狼」か「人狼以外」かを知ることができる。<br>初日占いが「お告げ」の場合、初日は占い先を選択できず、人間がランダムで一人告げられる。",
         },
         "medium": {
             "name": "霊媒師",
@@ -79,7 +79,7 @@ export function engname2description(rolename) {
             "name": "狂人",
             "team":team["werewolf"],
             "victory_condition":victory_condition["werewolf"],
-            "description":"人狼の味方をする狂った村人。人狼陣営の勝利を目指す。<br>狂人は誰が人狼なのか知らず、人狼も誰が狂人か知らない。",
+            "description":"人狼の味方をする狂った村人。人狼陣営の勝利を目指す。<br>狂人は人狼が誰か知らず、人狼も狂人が誰か知らない。",
         },
         "mason": {
             "name": "共有者",
@@ -91,14 +91,14 @@ export function engname2description(rolename) {
             "name": "狂信者",
             "team":team["werewolf"],
             "victory_condition":victory_condition["werewolf"],
-            "description":"人狼の味方をする狂った村人。人狼陣営の勝利を目指す。<br>狂人は誰が人狼なのか知っているが、人狼は誰が狂信者か知らない。",
+            "description":"人狼の味方をする狂った村人。人狼陣営の勝利を目指す。<br>狂信者は人狼が誰か知っているが、人狼は狂信者が誰か知らない。",
         },
         "fox": {
             "name": "妖狐",
             "team":team["fox"],
             "victory_condition":victory_condition["fox"],
-            "description":"占い師に占われると死ぬが、人狼に襲撃されても死なない。最後まで生き残ろう。",
-        },
+            "description":"占い師に占われると死ぬが、人狼に襲撃されても死なない。また人間にも人狼にもカウントされない。<br>気付かれずに最後まで生き残ろう。",
+        }
     }
     return dic[rolename]
 }

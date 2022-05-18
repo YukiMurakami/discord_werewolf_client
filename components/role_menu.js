@@ -1,20 +1,22 @@
 import {Button} from "./button.js"
-import {rolename2token} from "../config.js"
-
+import {rolename2token, engname2description} from "../config.js"
+import {show_role_description} from "../app.js"
 
 class RoleSetter {
-    constructor(infos, rolename, parent, width, x, y, func) {
+    constructor(infos, rolename, parent, width, x, y, func, show_button) {
         this.infos = infos
         this.parent = parent
         this.element = null;
         this.width = width
         this.rolename = rolename
         this.func = func
+        this.show_button = show_button
         this.x = x
         this.y = y
         this.up = null
         this.down = null
         this.num = null
+        this.roletext = null
     }
 
     draw(infos) {
@@ -25,25 +27,47 @@ class RoleSetter {
             card.style.position = "absolute"
             card.style.width = this.width
             card.style.height = this.width / 938 * 1125
-            card.style.top = 40
+            card.style.top = 10
             card.style.left = this.x
+            
+            if( this.show_button ){
+                let up = new Button(
+                    "＋１", this.parent, this.func,
+                    80, 9 + this.x, 10 + 124, "+" + this.rolename
+                    )
+                this.up = up
+
+                let down = new Button(
+                    "－１", this.parent, this.func,
+                    80, 9 + this.x, 10 + 154, "-" + this.rolename
+                )
+                this.down = down
+
+                this.up.draw()
+                this.down.draw()
+            } else {
+                card.addEventListener("mouseover", {
+                    showflag: true,
+                    role:this.rolename,
+                    handleEvent: show_role_description
+                })
+                card.addEventListener("mouseout", {
+                    showflag: false,
+                    role:this.rolename,
+                    handleEvent: show_role_description
+                })
+
+                this.roletext = document.createElement("div")
+                this.roletext.style.position = "absolute"
+                this.roletext.style.color = "#ffffff"
+                this.roletext.style.top = this.width / 938 * 1125 + 20
+                this.roletext.style.left = this.x + 30
+                this.parent.appendChild(this.roletext)
+                this.roletext.innerHTML = engname2description(this.rolename)["name"]
+            }
+
             this.parent.appendChild(card)
             this.element = card
-
-            let up = new Button(
-                "+1", this.parent, this.func,
-                80, 9 + this.x, 10, "+" + this.rolename
-            )
-            this.up = up
-
-            let down = new Button(
-                "-1", this.parent, this.func,
-                80, 9 + this.x, 10 + 154, "-" + this.rolename
-            )
-            this.down = down
-
-            this.up.draw()
-            this.down.draw()
 
             this.num = document.createElement("div")
             this.num.style.position = "absolute"
@@ -51,6 +75,7 @@ class RoleSetter {
             this.num.style.top = 197
             this.num.style.left = 45 + this.x
             this.parent.appendChild(this.num)
+
         }
 
         this.infos = infos
@@ -58,20 +83,23 @@ class RoleSetter {
         let status = this.infos["game_status"]
         let count = status["rule"]["roles"][rolename2token(this.rolename)]
         this.num.innerHTML = count ? count : 0
+        this.num.hidden = !this.show_button
     }
 }
 
 
 export class RoleMenu {
-    constructor(infos, parent, width, x, y, func) {
+    constructor(infos, parent, width, x, y, func, show_button) {
         this.infos = infos
         this.parent = parent;
         this.element = null;
         this.width = width
         this.func = func
+        this.show_button = show_button
         this.x = x
         this.y = y
         this.cards = []
+        this.height = null;
     }
 
     draw(showflag) {
@@ -89,12 +117,18 @@ export class RoleMenu {
             "fox",
         ]
         if (!this.element) {
+            if(this.show_button) {
+                this.height = this.width * 0.22
+            } else {
+                this.height = this.width * 0.17
+            }
             this.element = document.createElement("div")
             this.element.id = "role_menu"
             this.element.style.position = "absolute"
+            this.element.style.zIndex = 100
             this.parent.appendChild(this.element)
             this.element.style.width = this.width
-            this.element.style.height = this.width * 0.2
+            this.element.style.height = this.height
             this.element.style.borderRadius = "1%";
             this.element.style.backgroundColor = "rgba(0,0,0,0.7)"
             this.element.style.left = this.x.toString() + "px"
@@ -104,7 +138,7 @@ export class RoleMenu {
             this.element.style.borderColor = "#eeeeee"
             for (let i=0;i<roles.length;i++) {
                 let card = new RoleSetter(
-                    this.infos, roles[i], this.element, 100, 100 * i, 0, this.func
+                    this.infos, roles[i], this.element, 100, 100 * i, 0, this.func , this.show_button
                 )
                 this.cards.push(card)
             }

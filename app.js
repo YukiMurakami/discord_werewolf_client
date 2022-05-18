@@ -14,7 +14,6 @@ import { VoteShow } from "./components/vote_show.js";
 import { LogShow } from "./components/log_show.js";
 
 // 画面サイズ
-// const SCREEN_W = document.documentElement.clientWidth;
 const SCREEN_H = document.documentElement.clientHeight - 20;
 const SCREEN_W = SCREEN_H * 16 / 9;
 
@@ -24,6 +23,7 @@ let connection = ""
 let infos = {
     "send_id": -1,
     "roleset_open": false,
+    "rolelist_open": false,
     "rolecard_rotate": false,
     "volume": 0.2,
     "now_status": "offline",
@@ -41,7 +41,9 @@ let elements = {
     "role_button": null,
     "start_button": null,
     "logout_button": null,
+    "rolelist_button": null,
     "rolemenu": null,
+    "rolelist": null,
     "result_button": null,
     "role_description":null
 }
@@ -159,7 +161,7 @@ function drawTitle() {
     let buttons = document.getElementById("tmp")
 
     drawBackground("black")
-    
+
     let mes = document.createElement("div")
     buttons.appendChild(mes)
     mes.innerText = "Discord 人狼ツール v1.0"
@@ -169,7 +171,7 @@ function drawTitle() {
     mes.style.textAlign = "center"
     mes.style.left = ((SCREEN_W - mes.clientWidth) / 2).toString() + "px"
     mes.style.top = "250px"
-    
+
     let button = new Button("開始", buttons, () => {
         connection = new WebSocket(URI);
         connection.onopen = function(event) {
@@ -189,7 +191,7 @@ function drawAccountSelect() {
     let buttons = document.getElementById("tmp")
 
     drawBackground("black")
-    
+
     let mes = document.createElement("div")
     mes.innerText = "使用するアカウントを選択\n (自分のアカウントがない場合は、Discordにログインすること）"
     mes.style.color = "#ffffff"
@@ -257,25 +259,33 @@ function drawStatus(message) {
     let buttons = document.getElementById("buttons")
 
     function button_click(e) {
-        sendData(
-            {
-                "message": this.message,
-                "discord_id": infos["discord_id"]
+        if (this.message == "rolelist") {
+            if (!infos["rolelist_open"]) {
+                if (!elements["rolelist"]) {
+                    let rolemenu = new RoleMenu(
+                        infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click, false
+                    )
+                    elements["rolelist"] = rolemenu
+                }
+                infos["rolelist_open"] = true
+                elements["rolelist"].draw(infos["rolelist_open"])
+            } else {
+                if (!elements["rolelist"]) {
+                    let rolemenu = new RoleMenu(
+                        infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click, false
+                    )
+                    elements["rolelist"] = rolemenu
+                }
+                infos["rolelist_open"] = false
+                elements["rolelist"].draw(infos["rolelist_open"])
             }
-        )
-    }
-    function role_mouseover(e){
-        if(this.role != "back_card"){
-
-            let descriptionW = 250;
-            let y = (SCREEN_H - descriptionW * 0.6) / 2 -60
-            console.log("role_mouseover:" + this.showflag)
-            let roledescription = new RoleDescription(
-                document.getElementById("buttons"),
-                descriptionW * 1.4,
-                30,
-                y)
-            roledescription.draw(this.showflag,this.role);
+        } else {
+            sendData(
+                {
+                    "message": this.message,
+                    "discord_id": infos["discord_id"]
+                }
+            )
         }
     }
 
@@ -344,7 +354,7 @@ function drawStatus(message) {
                     x,
                     y,
                     button_click,
-                    role_mouseover
+                    show_role_description
                 )
                 elements[key] = player
             }
@@ -397,6 +407,21 @@ function drawStatus(message) {
         elements[key].draw(key, result)
         count += 1
     }
+    // 役職一覧ボタン
+    if (!elements["rolelist_button"]) {
+        let button = new Button(
+            "役職一覧", buttons, button_click,
+            120, SCREEN_W - 140, SCREEN_H - 50, "rolelist")
+        elements["rolelist_button"] = button
+    }
+    elements["rolelist_button"].draw()
+    if (!elements["rolelist"]) {
+        let rolemenu = new RoleMenu(
+            infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click, false
+        )
+        elements["rolelist"] = rolemenu
+    }
+    elements["rolelist"].draw(infos["rolelist_open"])
 
     //死亡時 or ゲーム終了時はログ表示
     let showflag = false
@@ -482,10 +507,10 @@ function drawAfternoon() {
         }
     }
     drawBackground(back)
-    
+
     drawStatus(status["day"].toString() + "日目昼")
     sound.play("minute_bell", infos, "first")
-    
+
     if (minute == 1 && second == 0) {
         sound.play("minute_bell", infos, "")
     }
@@ -538,7 +563,7 @@ function drawResult() {
         drawBackground("afternoon")
         sound.play("win", infos, "first")
     }
-    
+
     let title = ""
     if (status["result"] == "WEREWOLF") {
         title = "人狼チーム勝利"
@@ -751,7 +776,7 @@ function drawSetting() {
             if (!infos["roleset_open"]) {
                 if (!elements["rolemenu"]) {
                     let rolemenu = new RoleMenu(
-                        infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click
+                        infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click, true
                     )
                     elements["rolemenu"] = rolemenu
                 }
@@ -760,7 +785,7 @@ function drawSetting() {
             } else {
                 if (!elements["rolemenu"]) {
                     let rolemenu = new RoleMenu(
-                        infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click
+                        infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click, true
                     )
                     elements["rolemenu"] = rolemenu
                 }
@@ -828,24 +853,37 @@ function drawSetting() {
         elements[dic[key][1]].draw(dic[key][0], key)
         count += 1;
     }
-
+    // 退出ボタン
     if (!elements["logout_button"]) {
         let button = new Button(
             "退出", buttons, button_click,
-            120, SCREEN_W - 140, SCREEN_H - 50, "logout")
+            120, SCREEN_W - 140, SCREEN_H - 100, "logout")
         elements["logout_button"] = button
     }
     elements["logout_button"].draw()
 
     if (!elements["rolemenu"]) {
         let rolemenu = new RoleMenu(
-            infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click
+            infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click, true
         )
         elements["rolemenu"] = rolemenu
     }
     elements["rolemenu"].draw(infos["roleset_open"])
-}
 
+}
+// 役職説明を表示する
+export function show_role_description(e){
+    if(this.role != "back_card"){
+        let descriptionW = 250;
+        let y = (SCREEN_H - descriptionW * 0.6) / 2 + 80
+        let roledescription = new RoleDescription(
+            document.getElementById("buttons"),
+            descriptionW * 1.4,
+            30,
+            y)
+        roledescription.draw(this.showflag,this.role);
+    }
+}
 // メッセージ受信イベント
 function onMessage(event) {
     if (event && event.data) {
