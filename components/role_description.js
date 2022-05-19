@@ -46,7 +46,6 @@ export class RoleDescription {
 
             this.title = document.createElement("p")
             this.title.style.fontSize = "200%"
-            this.title.style.color = "#ffffff"
             this.title.style.position = "absolute"
             this.title.style.width = this.width
             this.title.style.top = this.width * 0.9 * 0.1
@@ -58,7 +57,6 @@ export class RoleDescription {
 
             this.mes = document.createElement("p")
             this.mes.style.fontSize = "85%"
-            this.mes.style.color = "#ffffff"
             this.mes.style.position = "absolute"
             this.mes.style.width = this.width * 0.95
             this.mes.style.top = this.width * 0.9 * 0.4
@@ -73,12 +71,5 @@ export class RoleDescription {
             + "<br>"
             + "<br>陣営：" + role_description["team"]
             + "<br>勝利条件：" + role_description["victory_condition"]
-        if (message_str != "") {
-            this.element.hidden = !showflag;
-            this.mes.hidden = !showflag;
-        } else {
-            this.element.hidden = true;
-            this.mes.hidden = true;
-        }
     }
 }

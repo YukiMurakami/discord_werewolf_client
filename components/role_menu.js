@@ -29,7 +29,7 @@ class RoleSetter {
             card.style.height = this.width / 938 * 1125
             card.style.top = 10
             card.style.left = this.x
-            
+
             if( this.show_button ){
                 let up = new Button(
                     "＋１", this.parent, this.func,
@@ -142,6 +142,23 @@ export class RoleMenu {
                 )
                 this.cards.push(card)
             }
+            let close_button = document.createElement("div")
+            close_button.id = "close_button"
+            close_button.style.position = "absolute"
+            close_button.style.zIndex = 100
+            close_button.style.width = 20;
+            close_button.style.height = 20;
+            close_button.style.right = "-10px"
+            close_button.style.top = "-40px"
+            close_button.style.color = "#eeeeee"
+            close_button.style.fontSize = "200%"
+            close_button.style.cursor = "pointer"
+            close_button.addEventListener("click", {
+                message: "rolelist",
+                handleEvent:this.func
+            })
+            this.element.appendChild(close_button)
+            close_button.innerHTML = "×"
         }
         for (let i=0;i<roles.length;i++) {
             this.cards[i].draw(this.infos)

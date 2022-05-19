@@ -8,11 +8,13 @@
     background-size: 100%;
     background-image: url("../images/ui/button.png");
     position: absolute;
+    cursor: pointer;
 }
-  
+
 .button:active {
     padding: 0.5% 0 0 0;
     background-image: url("../images/ui/click.png");
+    cursor: pointer
 }
 
 .card{
@@ -20,7 +22,7 @@
     width: 400px;
     height: 400px;
 }
-  
+
 .card div{
     position: absolute;
     top: 0;
@@ -53,7 +55,7 @@ th,td {
     text-align: center;
     font-size: 12px;
 }
- 
+
 table {
     border-collapse:  collapse; /* セルの線を重ねる */
 }

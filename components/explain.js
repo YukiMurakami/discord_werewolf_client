@@ -18,18 +18,18 @@ export class Explain {
         if (status["status"] == "EXCUTION") {
             let excution_id = status["excution"]
             let name = discord_id2name(excution_id, players)
-            message_str = "本日処刑されるのは" + name + "さんです。遺言をどうぞ。"
+            message_str = "本日処刑されるのは" + name + "さんです。遺言をどうぞ。<br>遺言が完了したら遺言完了ボタンを押してください。"
         }
         if (status["status"] == "VOTE") {
             let vote_count = status["vote"]
             if (vote_count == 0) {
-                message_str = "今日も誰か一人を処刑する時間が来ました。一人ずつ順番に軽く意見を述べた上で投票を行ってください。"
+                message_str = "今日も誰か一人を処刑する時間がやってきました。一人ずつ順番に、軽く意見を述べた上で投票を行ってください。"
             } else if (vote_count > 0) {
                 let vote_targets = []
                 for (let i=0;i<status["vote_candidates"].length;i++) {
                     vote_targets.push(discord_id2name(status["vote_candidates"][i], players) + "さん")
                 }
-                message_str = vote_targets.join("、") + "が最多得票となったので決選投票を行います。好きな順で３０秒程度ずつ弁明をしていただき、その後再度投票を行ってください。決選投票は終了後一斉に開示します。"
+                message_str = vote_targets.join("、") + "が同数で最多得票となったため決選投票を行います。<br>好きな順で３０秒程度ずつ弁明をしていただき、その後再度投票を行ってください。<br>決選投票は終了後一斉に開示します。"
             }
         }
         let action_results = status["action_results"]
@@ -39,27 +39,27 @@ export class Explain {
                 let name = discord_id2name(div[2], players)
                 let result = ""
                 if (div[3] == "WEREWOLF") {
-                    result = "人狼"
+                    result = "人狼です。"
                 } else {
-                    result = "人狼ではない"
+                    result = "人狼ではありません。"
                 }
                 if (message_str != "") {
                     message_str += "<br>"
                 }
-                message_str += "占い結果、" + name + "さんは" + result + "です。"
+                message_str += "占い結果、" + name + "さんは" + result
             }
             if (div[0] == "medium") {
                 let name = discord_id2name(div[2], players)
                 let result = ""
                 if (div[3] == "WEREWOLF") {
-                    result = "人狼"
+                    result = "人狼です。"
                 } else {
-                    result = "人狼ではない"
+                    result = "人狼ではありません。"
                 }
                 if (message_str != "") {
                     message_str += "<br>"
                 }
-                message_str += "霊媒結果、" + name + "さんは" + result + "です。"
+                message_str += "霊媒結果、" + name + "さんは" + result
             }
             if (div[0] == "attack") {
                 let src_name = discord_id2name(div[1], players)
@@ -95,9 +95,9 @@ export class Explain {
                 message_str += "<br>"
             }
             if (name == "") {
-                message_str += "朝になると、誰も死亡していませんでした。"
+                message_str += "朝になりました。昨晩の犠牲者はいませんでした。"
             } else {
-                message_str += "朝になると" + name + "が無惨な姿で発見されました。"
+                message_str += "朝になりました。" + name + "が無惨な姿で発見されました。"
             }
         }
         
