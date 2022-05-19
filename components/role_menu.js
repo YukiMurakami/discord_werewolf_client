@@ -89,13 +89,14 @@ class RoleSetter {
 
 
 export class RoleMenu {
-    constructor(infos, parent, width, x, y, func, show_button) {
+    constructor(infos, parent, width, x, y, func, show_button , message) {
         this.infos = infos
         this.parent = parent;
         this.element = null;
         this.width = width
         this.func = func
         this.show_button = show_button
+        this.message = message
         this.x = x
         this.y = y
         this.cards = []
@@ -154,7 +155,7 @@ export class RoleMenu {
             close_button.style.fontSize = "200%"
             close_button.style.cursor = "pointer"
             close_button.addEventListener("click", {
-                message: "rolelist",
+                message: this.message,
                 handleEvent:this.func
             })
             this.element.appendChild(close_button)

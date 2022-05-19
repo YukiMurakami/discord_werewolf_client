@@ -263,7 +263,7 @@ function drawStatus(message) {
             if (!infos["rolelist_open"]) {
                 if (!elements["rolelist"]) {
                     let rolemenu = new RoleMenu(
-                        infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click, false
+                        infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click, false ,this.message
                     )
                     elements["rolelist"] = rolemenu
                 }
@@ -272,7 +272,7 @@ function drawStatus(message) {
             } else {
                 if (!elements["rolelist"]) {
                     let rolemenu = new RoleMenu(
-                        infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click, false
+                        infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click, false , this.message
                     )
                     elements["rolelist"] = rolemenu
                 }
@@ -417,7 +417,7 @@ function drawStatus(message) {
     elements["rolelist_button"].draw()
     if (!elements["rolelist"]) {
         let rolemenu = new RoleMenu(
-            infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click, false
+            infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click, false, "rolelist"
         )
         elements["rolelist"] = rolemenu
     }
@@ -776,7 +776,7 @@ function drawSetting() {
             if (!infos["roleset_open"]) {
                 if (!elements["rolemenu"]) {
                     let rolemenu = new RoleMenu(
-                        infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click, true
+                        infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click, true, this.message
                     )
                     elements["rolemenu"] = rolemenu
                 }
@@ -785,7 +785,7 @@ function drawSetting() {
             } else {
                 if (!elements["rolemenu"]) {
                     let rolemenu = new RoleMenu(
-                        infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click, true
+                        infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click, true, this.message
                     )
                     elements["rolemenu"] = rolemenu
                 }
@@ -864,7 +864,7 @@ function drawSetting() {
 
     if (!elements["rolemenu"]) {
         let rolemenu = new RoleMenu(
-            infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click, true
+            infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05, 100, button_click, true, "role_set"
         )
         elements["rolemenu"] = rolemenu
     }
