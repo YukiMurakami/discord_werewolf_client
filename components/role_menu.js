@@ -122,6 +122,7 @@ export class RoleMenu {
             } else {
                 this.height = this.width * 0.17
             }
+            console.log(showflag)
             this.element = document.createElement("div")
             this.element.id = "role_menu"
             this.element.style.position = "absolute"
@@ -142,10 +143,30 @@ export class RoleMenu {
                 )
                 this.cards.push(card)
             }
+            let close_button = document.createElement("div")
+            close_button.id = "close_button"
+            close_button.style.position = "absolute"
+            close_button.style.zIndex = 100
+            close_button.style.width = 20;
+            close_button.style.height = 20;
+            close_button.style.right = "-10px"
+            close_button.style.top = "-40px"
+            close_button.style.color = "#eeeeee"
+            close_button.style.fontSize = "200%"
+            close_button.addEventListener("click",{
+                showflag:false,
+                handleEvent:this.close
+            } )
+            this.element.appendChild(close_button)
+            close_button.innerHTML = "×"
         }
         for (let i=0;i<roles.length;i++) {
             this.cards[i].draw(this.infos)
         }
         this.element.hidden = !showflag
+    }
+    close(){
+        let role_menu = document.getElementById("role_menu");
+        role_menu.hidden = true;
     }
 }

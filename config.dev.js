@@ -49,19 +49,19 @@ export function engname2description(rolename) {
             "name":"村人",
             "team":team["human"],
             "victory_condition":victory_condition["human"],
-            "description":"なんの能力も持たない村人。<br>議論の中心となり人狼を見つけ出そう。"
+            "description":"何も能力を持たない村人。<br>議論の中心となり人狼を見つけ出そう。"
         },
         "werewolf": {
             "name":"人狼",
             "team":team["werewolf"],
             "victory_condition":victory_condition["werewolf"],
-            "description":"毎晩仲間の人狼と作戦会議を行い、1人を指定し襲撃を行う。",
+            "description":"毎晩、仲間の人狼と作戦会議を行い、1人を指定し襲撃を行う。",
         },
         "seer": {
             "name": "占い師",
             "team":team["human"],
             "victory_condition":victory_condition["human"],
-            "description":"毎晩、生存者のうち1人が「人狼」か「人狼以外」かを知ることができる。<br>初日占いが「お告げ」の場合、初日は占い先を選択できず、人間がランダムで一人告げられる。",
+            "description":"毎晩、生存者のうち1人が「人狼」か「人狼以外」かを知ることができる。<br>初日占いが「お告げ」の場合、占い先を選択できず、人間がランダムで一人告げられる。",
         },
         "medium": {
             "name": "霊媒師",
@@ -73,25 +73,25 @@ export function engname2description(rolename) {
             "name": "狩人",
             "team":team["human"],
             "victory_condition":victory_condition["human"],
-            "description":"夜時間毎に1人だけ人狼の襲撃から護衛することができる。<br>護衛した先と人狼の襲撃先が一致した場合、襲撃は失敗し平和な朝を迎える。<br>自分自身は守ることが出来ない。",
+            "description":"夜時間毎に1人だけ人狼の襲撃から護衛することができる。<br>護衛した先と人狼の襲撃先が一致した場合、襲撃は失敗し平和な朝を迎える。<br>自分自身を守ることは出来ない。",
         },
         "madman": {
             "name": "狂人",
             "team":team["werewolf"],
             "victory_condition":victory_condition["werewolf"],
-            "description":"人狼の味方をする狂った村人。人狼陣営の勝利を目指す。<br>狂人は人狼が誰か知らず、人狼も狂人が誰か知らない。",
+            "description":"人狼の味方をする狂った人間。人狼陣営の勝利を目指す。<br>狂人は人狼が誰か知らず、人狼も狂人が誰か知らない。",
         },
         "mason": {
             "name": "共有者",
             "team":team["human"],
             "victory_condition":victory_condition["human"],
-            "description":"毎晩仲間の共有者と作戦会議を行うことができる。",
+            "description":"毎晩仲間の共有者と作戦会議を行うことができる村人。",
         },
         "cultist": {
             "name": "狂信者",
             "team":team["werewolf"],
             "victory_condition":victory_condition["werewolf"],
-            "description":"人狼の味方をする狂った村人。人狼陣営の勝利を目指す。<br>狂信者は人狼が誰か知っているが、人狼は狂信者が誰か知らない。",
+            "description":"人狼の味方をする狂った人間。人狼陣営の勝利を目指す。<br>狂信者は人狼が誰か知っているが、人狼は狂信者が誰か知らない。",
         },
         "fox": {
             "name": "妖狐",
