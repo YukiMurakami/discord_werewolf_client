@@ -129,6 +129,26 @@ export class Player {
             this.element.append(card)
             this.rolecard = card
 
+            let index = document.createElement("div")
+            index.innerHTML = (this.index + 1).toString()
+            index.style.textAlign = "center"
+            index.style.fontSize = "75%"
+            index.style.fontWeight = "bold"
+            index.style.color ="#ffffff"
+            // index.style.color = this.participateColor
+            index.style.position = "absolute"
+            index.style.top = this.width * -0.05
+            index.style.right = this.width * -0.3
+            index.style.width = this.width * 0.2
+            index.style.height = this.width * 0.2
+            index.style.borderRadius = "50%"; // 正円
+            index.style.backgroundColor = "rgba(0,0,0,0.4)"
+            index.style.borderWidth = "1.5px"
+            index.style.borderStyle = "solid"
+            index.style.borderColor = "#ffffff"
+            // index.style.borderColor = this.participateColor
+            this.element.appendChild(index)
+
             let mes = document.createElement("div")
             mes.innerHTML = ""
             mes.style.textAlign = "center"
