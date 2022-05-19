@@ -29,7 +29,7 @@ class RoleSetter {
             card.style.height = this.width / 938 * 1125
             card.style.top = 10
             card.style.left = this.x
-            
+
             if( this.show_button ){
                 let up = new Button(
                     "＋１", this.parent, this.func,
@@ -122,7 +122,6 @@ export class RoleMenu {
             } else {
                 this.height = this.width * 0.17
             }
-            console.log(showflag)
             this.element = document.createElement("div")
             this.element.id = "role_menu"
             this.element.style.position = "absolute"
@@ -153,10 +152,11 @@ export class RoleMenu {
             close_button.style.top = "-40px"
             close_button.style.color = "#eeeeee"
             close_button.style.fontSize = "200%"
-            close_button.addEventListener("click",{
-                showflag:false,
-                handleEvent:this.close
-            } )
+            close_button.style.cursor = "pointer"
+            close_button.addEventListener("click", {
+                message: "rolelist",
+                handleEvent:this.func
+            })
             this.element.appendChild(close_button)
             close_button.innerHTML = "×"
         }
@@ -164,9 +164,5 @@ export class RoleMenu {
             this.cards[i].draw(this.infos)
         }
         this.element.hidden = !showflag
-    }
-    close(){
-        let role_menu = document.getElementById("role_menu");
-        role_menu.hidden = true;
     }
 }
