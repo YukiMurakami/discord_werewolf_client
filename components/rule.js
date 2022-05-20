@@ -66,6 +66,9 @@ export class Rule {
             second_str = "0" + status["second"].toString()
         }
         let rule_str = "<font size='6'>" + minute_str + ":" + second_str + "</font>"
+        if (status["timer_stop"]) {
+            rule_str = "<font size='6' color='orange'>" + minute_str + ":" + second_str + "</font>"
+        }
         let live_count = 0
         for (let i=0;i<players.length;i++) {
             if (players[i]["live"]) {

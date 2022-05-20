@@ -45,7 +45,8 @@ let elements = {
     "rolemenu": null,
     "rolelist": null,
     "result_button": null,
-    "role_description":null
+    "role_description":null,
+    "timer_stop_button": null,
 }
 const sound = new Sound()
 
@@ -531,6 +532,28 @@ function drawAfternoon() {
     }
     drawCoButtons()
     drawHandButton()
+
+    function button_click(e) {
+        sendData(
+            {
+                "message": this.message,
+                "discord_id": infos["discord_id"]
+            }
+        )
+    }
+
+    // タイマー停止ボタン
+    if (!elements["timer_stop_button"]) {
+        let button = new Button(
+            "一時停止", buttons, button_click,
+            120, SCREEN_W - 140, SCREEN_H - 50 - 50, "timer_stop:true")
+        elements["timer_stop_button"] = button
+    }
+    if (status["timer_stop"]) {
+        elements["timer_stop_button"].draw("再開", "timer_stop:false")
+    } else {
+        elements["timer_stop_button"].draw("一時停止", "timer_stop:true")
+    }
 }
 
 function drawVote() {
