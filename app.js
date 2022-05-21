@@ -447,6 +447,8 @@ function drawStatus(message) {
         }
         elements[key].draw("ログ表示", status["log"], infos)
     }
+
+    drawHandButton()
 }
 
 function getVoteLog() {
