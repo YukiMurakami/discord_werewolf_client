@@ -39,7 +39,7 @@ export class Explain {
                 let name = discord_id2name(div[2], players)
                 let result = ""
                 if (div[3] == "WEREWOLF") {
-                    result = "人狼です。"
+                    result = "<font color='red'>人狼</font>です。"
                 } else {
                     result = "人狼ではありません。"
                 }
@@ -52,7 +52,7 @@ export class Explain {
                 let name = discord_id2name(div[2], players)
                 let result = ""
                 if (div[3] == "WEREWOLF") {
-                    result = "人狼です。"
+                    result = "<font color='red'>人狼</font>です。"
                 } else {
                     result = "人狼ではありません。"
                 }
