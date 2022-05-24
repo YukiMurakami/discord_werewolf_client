@@ -13,7 +13,7 @@ export class Player {
         this.func = func
         this.role_func = role_func
 
-        this.participateColor = "#ffbb00"
+        this.participateColor = "#eeaa00"
         this.talkingColor = "#33ff33"
         this.outColor = "#cccccc"
         this.disconnectColor = "#dd0000"
@@ -37,16 +37,6 @@ export class Player {
         for (let i=0;i<players.length;i++) {
             if (players[i]["discord_id"] == this.infos["discord_id"]) {
                 my_player = players[i]
-            }
-        }
-        let my_room = my_player["voice"]
-        let voice_on = false
-        if (my_room) {
-            if (players[this.index]["voice"]) {
-                let voice = players[this.index]["voice"]
-                if (my_room == voice) {
-                    voice_on = true
-                }
             }
         }
         let speak = players[this.index]["speaking"]
@@ -164,10 +154,7 @@ export class Player {
         this.element.style.top = this.y.toString() + "px"
 
         this.element.style.borderColor = this.participateColor
-        if (!voice_on) {
-            this.element.style.borderColor = this.outColor
-            this.element.style.borderWidth = "2px"
-        } else if (speak) {
+        if (speak) {
             this.element.style.borderColor = this.talkingColor
         }
 
@@ -175,6 +162,7 @@ export class Player {
             this.death.hidden = false
             this.avator.style.opacity = 0.2
             this.avator.style.backgroundColor = "#000000"
+            this.element.style.borderColor = this.outColor
         } else {
             this.death.hidden = true
             this.avator.style.opacity = 1.0
@@ -205,10 +193,12 @@ export class Player {
             this.mes.style.bottom = 0
         }
         this.mes.style.color = this.participateColor
-        if (!voice_on) {
-            this.mes.style.color = this.outColor
-        } else if (speak) {
+        if (speak) {
             this.mes.style.color = this.talkingColor
+        }
+        if (!players[this.index]["live"]) {
+            this.mes.style.color = this.outColor
+            this.element.style.borderWidth = "2px"
         }
         if (players[this.index]["disconnect"]) {
             this.mes.style.color = this.disconnectColor
