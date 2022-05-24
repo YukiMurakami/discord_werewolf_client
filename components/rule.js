@@ -62,12 +62,17 @@ export class Rule {
         }
         let minute_str = status["minute"].toString()
         let second_str = status["second"].toString()
+        let all_moved_flag = status["all_moved_flag"]
+        let wait_message = ""
+        if (!all_moved_flag) {
+            wait_message = " （移動中）"
+        }
         if (status["second"] < 10) {
             second_str = "0" + status["second"].toString()
         }
-        let rule_str = "<font size='6'>" + minute_str + ":" + second_str + "</font>"
+        let rule_str = "<font size='6'>" + minute_str + ":" + second_str + wait_message + "</font>"
         if (status["timer_stop"]) {
-            rule_str = "<font size='6' color='orange'>" + minute_str + ":" + second_str + "</font>"
+            rule_str = "<font size='6' color='orange'>" + minute_str + ":" + second_str + wait_message + "</font>"
         }
         let live_count = 0
         for (let i=0;i<players.length;i++) {
