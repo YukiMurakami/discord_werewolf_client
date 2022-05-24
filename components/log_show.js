@@ -229,7 +229,9 @@ function mouseover_vote() {
                         if (div[0] == "attack") {
                             let src = discord_ids.indexOf(div[1])
                             status[src] = get_name(div[2], players)
-                            attack_ids.push(div[2])
+                            if (roles[div[2]] != "妖狐") {
+                                attack_ids.push(div[2])
+                            }
                         }
                         if (div[0] == "bodyguard") {
                             let src = discord_ids.indexOf(div[1])
