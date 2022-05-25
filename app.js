@@ -16,6 +16,7 @@ import { LogShow } from "./components/log_show.js";
 // 画面サイズ
 const SCREEN_H = document.documentElement.clientHeight - 20;
 const SCREEN_W = SCREEN_H * 16 / 9;
+const RATIO = SCREEN_W / 1000
 
 const URI = config["URI"]
 let client_status = "offline"
@@ -167,11 +168,11 @@ function drawTitle() {
     buttons.appendChild(mes)
     mes.innerText = "Discord 人狼ツール v1.0"
     mes.style.color = "#ffffff"
-    mes.style.fontSize = "30px"
+    mes.style.fontSize = (RATIO * 30).toString() + "px"
     mes.style.position = "absolute"
     mes.style.textAlign = "center"
     mes.style.left = ((SCREEN_W - mes.clientWidth) / 2).toString() + "px"
-    mes.style.top = "250px"
+    mes.style.top = ((SCREEN_H - mes.clientHeight) / 2).toString() + "px"
 
     let button = new Button("開始", buttons, () => {
         connection = new WebSocket(URI);
@@ -184,7 +185,9 @@ function drawTitle() {
         connection.onmessage = onMessage;
         connection.onclose = onClose;
         connection.onerror = onError;
-    }, 200, (SCREEN_W - 200) / 2, 350, null)
+        }, 150 * RATIO,
+        (SCREEN_W - 150 * RATIO) / 2,
+        (SCREEN_H - 150 * RATIO / 132 * 45) / 2 + 100 * RATIO, null)
     button.draw()
 }
 
