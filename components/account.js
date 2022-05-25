@@ -1,5 +1,5 @@
 export class Account {
-    constructor(name, avator_url, discord_id, parent, func, width, x, y) {
+    constructor(name, avator_url, discord_id, parent, func, width, x, y, ratio) {
         this.name = name
         this.avator_url = avator_url
         this.discord_id = discord_id
@@ -9,6 +9,7 @@ export class Account {
         this.width = width
         this.x = x
         this.y = y
+        this.ratio = ratio
     }
 
     draw() {
@@ -30,7 +31,7 @@ export class Account {
             let mes = document.createElement("div")
             mes.innerHTML = this.name
             mes.style.textAlign = "center"
-            mes.style.fontSize = "80%"
+            mes.style.fontSize = (10 * this.ratio).toString() + "px"
             mes.style.color = "#ffffff"
 
             this.element.appendChild(mes)

@@ -199,10 +199,10 @@ function drawAccountSelect() {
     let mes = document.createElement("div")
     mes.innerText = "使用するアカウントを選択\n (自分のアカウントがない場合は、Discordにログインすること）"
     mes.style.color = "#ffffff"
-    mes.style.fontSize = "30px"
+    mes.style.fontSize = (20 * RATIO).toString() + "px"
     mes.style.position = "absolute"
     mes.style.textAlign = "center"
-    mes.style.top = "50px"
+    mes.style.top = 60 * RATIO
     buttons.appendChild(mes)
     mes.style.left = ((SCREEN_W - mes.clientWidth) / 2).toString() + "px"
 
@@ -216,6 +216,11 @@ function drawAccountSelect() {
         )
     }
 
+    let width = 70 * RATIO
+    let height = width * 1.2
+    let margin = 20 * RATIO
+    let side_count = 9
+
     for (let i = 0; i < infos["accounts"].length; i++) {
         let account = infos["accounts"][i]
 
@@ -225,7 +230,9 @@ function drawAccountSelect() {
             account["discord_id"],
             buttons,
             account_select_button_click,
-            100, (SCREEN_W - 820) / 2 + 120 * (i % 7), 200 + 140 * parseInt(i / 7, 10)
+            width,
+            (SCREEN_W - width * side_count - margin * (side_count - 1)) / 2 + (width + margin) * (i % side_count),
+            150 * RATIO + (height + margin) * parseInt(i / side_count, 10), RATIO
         )
         account_div.draw()
     }
