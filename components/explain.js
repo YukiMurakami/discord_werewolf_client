@@ -1,5 +1,5 @@
 export class Explain {
-    constructor(infos, parent, width, x, y) {
+    constructor(infos, parent, width, x, y, ratio) {
         this.infos = infos
         this.parent = parent;
         this.element = null;
@@ -7,6 +7,7 @@ export class Explain {
         this.x = x
         this.y = y
         this.mes = null;
+        this.ratio = ratio
     }
 
     draw(infos) {
@@ -106,7 +107,7 @@ export class Explain {
             this.element.style.position = "absolute"
             this.parent.appendChild(this.element)
             this.element.style.width = this.width
-            this.element.style.height = this.width * 0.3
+            this.element.style.height = this.width * 0.26
             this.element.style.borderRadius = "8%";
             this.element.style.backgroundColor = "rgba(0,0,0,0.7)"
             this.element.style.left = this.x.toString() + "px"
@@ -116,7 +117,7 @@ export class Explain {
             this.element.style.borderColor = "#eeeeee"
 
             this.mes = document.createElement("div")
-            this.mes.style.fontSize = "100%"
+            this.mes.style.fontSize = (12 * this.ratio).toString() + "px"
             this.mes.style.color = "#ffffff"
             this.mes.style.position = "absolute"
             this.mes.style.width = this.width * 0.95

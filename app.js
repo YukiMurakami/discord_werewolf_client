@@ -392,7 +392,7 @@ function drawStatus(message) {
     //その他情報
     if (!elements["explain"]) {
         let explain = new Explain(
-            infos, buttons, ruleW * 1.4, (SCREEN_W - ruleW * 1.4) / 2, y + 170
+            infos, buttons, ruleW * 1.4, (SCREEN_W - ruleW * 1.4) / 2, y + 133 * RATIO, RATIO
         )
         elements["explain"] = explain
     }
