@@ -1,5 +1,5 @@
 export class Rule {
-    constructor(infos, parent, width, x, y) {
+    constructor(infos, parent, width, x, y, ratio) {
         this.infos = infos
         this.parent = parent;
         this.element = null;
@@ -7,6 +7,8 @@ export class Rule {
         this.x = x
         this.y = y
         this.mes = null;
+        this.mes2 = null;
+        this.ratio = ratio
     }
 
     draw(only_time) {
@@ -27,14 +29,23 @@ export class Rule {
             this.element.style.borderColor = "#eeeeee"
 
             this.mes = document.createElement("div")
-            this.mes.style.fontSize = "100%"
+            this.mes.style.fontSize = (30 * this.ratio).toString() + "px"
             this.mes.style.color = "#ffffff"
             this.mes.style.position = "absolute"
             this.mes.style.width = this.width
             this.mes.style.color = "#eeeeee"
             this.mes.style.padding = "0 0 0 10"
-
             this.element.appendChild(this.mes)
+
+            this.mes2 = document.createElement("div")
+            this.mes2.style.fontSize = (12 * this.ratio).toString() + "px"
+            this.mes2.style.color = "#ffffff"
+            this.mes2.style.position = "absolute"
+            this.mes2.style.width = this.width
+            this.mes2.style.color = "#eeeeee"
+            this.mes2.style.top = 43 * this.ratio
+            this.mes2.style.padding = "0 0 0 10"
+            this.element.appendChild(this.mes2)
         }
         if (only_time) {
             this.element.style.height = this.width * 0.2
@@ -70,9 +81,9 @@ export class Rule {
         if (status["second"] < 10) {
             second_str = "0" + status["second"].toString()
         }
-        let rule_str = "<font size='6'>" + minute_str + ":" + second_str + wait_message + "</font>"
+        let rule_str = minute_str + ":" + second_str + wait_message
         if (status["timer_stop"]) {
-            rule_str = "<font size='6' color='orange'>" + minute_str + ":" + second_str + wait_message + "</font>"
+            rule_str = "<font color='orange'>" + minute_str + ":" + second_str + wait_message + "</font>"
         }
         let live_count = 0
         for (let i=0;i<players.length;i++) {
@@ -80,13 +91,15 @@ export class Rule {
                 live_count += 1
             }
         }
+        let rule_str2 = ""
         if (!only_time) {
-            rule_str += "<br>人数：" + live_count + "/" + role_n.toString()
-            rule_str += "<br>役職：" + role_str
-            rule_str += "<br>初日占い：" + first_seer_str
-            rule_str += "<br>連続ガード：" + guard_str
+            rule_str2 += "人数：" + live_count + "/" + role_n.toString()
+            rule_str2 += "<br>役職：" + role_str
+            rule_str2 += "<br>初日占い：" + first_seer_str
+            rule_str2 += "<br>連続ガード：" + guard_str
         }
 
         this.mes.innerHTML = rule_str
+        this.mes2.innerHTML = rule_str2
     }
 }

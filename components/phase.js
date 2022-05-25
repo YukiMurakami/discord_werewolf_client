@@ -1,5 +1,5 @@
 export class Phase {
-    constructor(title, parent, width, x, y) {
+    constructor(title, parent, width, x, y, ratio) {
         this.title = title;
         this.parent = parent;
         this.element = null;
@@ -7,6 +7,7 @@ export class Phase {
         this.x = x
         this.y = y
         this.mes = null;
+        this.ratio = ratio
     }
 
     draw(title) {
@@ -24,15 +25,13 @@ export class Phase {
             this.mes = document.createElement("div")
             this.element.appendChild(this.mes)
             this.mes.style.color = "#000000"
+            this.mes.innerHTML = this.title
             this.mes.style.textAlign = "center"
-            this.element.style.position = "absolute"
-            this.mes.style.padding = "7% 16% 0 16%"
+            this.mes.style.position = "absolute"
+            this.mes.style.fontSize = (16 * this.ratio).toString() + "px"
         }
         this.mes.innerHTML = this.title
-        if (this.title.length >= 6) {
-            this.element.style.fontSize = Number(this.element.clientHeight / 45 * 100 * 0.8).toString() + "%"
-        } else {
-            this.element.style.fontSize = Number(this.element.clientHeight / 45 * 100).toString() + "%"
-        }
+        this.mes.style.left = ((this.width - this.mes.clientWidth) / 2).toString() + "px"
+        this.mes.style.top = ((this.width / 356 * 120 - this.mes.clientHeight) / 2).toString() + "px"
     }
 }

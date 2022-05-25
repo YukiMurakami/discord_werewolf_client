@@ -1,5 +1,5 @@
 export class Voice {
-    constructor(infos, parent, width, x, y) {
+    constructor(infos, parent, width, x, y, ratio) {
         this.infos = infos
         this.parent = parent;
         this.element = null;
@@ -7,6 +7,7 @@ export class Voice {
         this.x = x
         this.y = y
         this.mes = null;
+        this.ratio = ratio
     }
 
     draw() {
@@ -42,6 +43,7 @@ export class Voice {
             this.mes.style.top = this.width * 0.3 * 0.4 / 2
             this.mes.style.left = this.width * 0.3 * 0.4 / 2 + this.width * 0.3 * 0.6
             this.mes.style.color = "#eeeeee"
+            this.mes.style.fontSize = (14 * this.ratio).toString() + "px"
             this.element.appendChild(this.mes)
         }
         let message_str = ""

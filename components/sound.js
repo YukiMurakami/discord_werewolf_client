@@ -1,5 +1,5 @@
 export class Volume {
-    constructor(parent, width, x, y, sound, infos) {
+    constructor(parent, width, x, y, sound, infos, ratio) {
         this.parent = parent;
         this.element = null;
         this.width = width
@@ -7,6 +7,7 @@ export class Volume {
         this.infos = infos
         this.x = x
         this.y = y
+        this.ratio = ratio
     }
 
     callback() {
@@ -35,10 +36,11 @@ export class Volume {
             let mes = document.createElement("div")
             this.parent.appendChild(mes)
             mes.innerHTML = "音量"
+            mes.style.fontSize = (14 * this.ratio).toString() + "px"
             mes.style.color = "#000000"
             mes.style.textAlign = "center"
             mes.style.position = "absolute"
-            mes.style.left = (this.x - 35).toString() + "px"
+            mes.style.left = (this.x - 35 * this.ratio).toString() + "px"
             mes.style.top = this.y.toString() + "px"
 
             this.element.addEventListener("change", () => { this.callback() })

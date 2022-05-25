@@ -299,11 +299,11 @@ function drawStatus(message) {
             )
         }
     }
-
     //今のフェーズ情報
     if (!elements["phase"]) {
         let phase = new Phase(
-            message, buttons, 180, 20, 20
+            message, buttons, 110 * RATIO,
+            15 * RATIO, 15 * RATIO, RATIO
         )
         elements["phase"] = phase
     }
@@ -315,7 +315,7 @@ function drawStatus(message) {
     //ボリューム操作
     if (!elements["volume"]) {
         let volume = new Volume(
-            buttons, 100, 70, 90, sound, infos
+            buttons, 66 * RATIO, 56 * RATIO, 63 * RATIO, sound, infos, RATIO
         )
         elements["volume"] = volume
     }
@@ -324,7 +324,7 @@ function drawStatus(message) {
     //ボイスチャンネル情報
     if (!elements["voice"]) {
         let voice = new Voice(
-            infos, buttons, 130, 220, 28
+            infos, buttons, 110 * RATIO, 135 * RATIO, 16 * RATIO, RATIO
         )
         elements["voice"] = voice
     }
@@ -374,8 +374,8 @@ function drawStatus(message) {
     }
 
     //ルール情報
-    let ruleW = 300
-    let y = (SCREEN_H - ruleW * 0.6) / 2 - 30
+    let ruleW = 230 * RATIO
+    let y = (SCREEN_H - ruleW * 0.6) / 2 - 30 * RATIO
     let time_only = false
     if (status["status"] == "ROLE_CHECK") {
         y = 50
@@ -383,7 +383,7 @@ function drawStatus(message) {
     }
     if (!elements["rule"]) {
         let rule = new Rule(
-            infos, buttons, ruleW, (SCREEN_W - ruleW) / 2, y
+            infos, buttons, ruleW, (SCREEN_W - ruleW) / 2, y, RATIO
         )
         elements["rule"] = rule
     }
