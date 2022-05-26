@@ -333,8 +333,8 @@ function drawStatus(message) {
     //プレイヤー情報
     let keys = []
     if (status["status"] != "ROLE_CHECK") {
-        let radiusW = SCREEN_W * 0.4
-        let radiusH = SCREEN_H * 0.4 - 20
+        let radiusW = SCREEN_W * 0.415
+        let radiusH = SCREEN_H * 0.4 - 20 * RATIO
         let playerC = players.length
         for (let i=0;i<playerC;i++) {
             let sin = Math.sin(Math.PI * 2 / playerC * i)
@@ -351,8 +351,8 @@ function drawStatus(message) {
             if (i == 0) {
                 adjust = 0
             }
-            let x = SCREEN_W / 2 - 52 + radiusW * Math.cos(Math.PI * 2 / playerC * i + adjust)
-            let y = SCREEN_H / 2 - 62 + radiusH * Math.sin(Math.PI * 2 / playerC * i + adjust) - 10
+            let x = SCREEN_W / 2 - 38 * RATIO + radiusW * Math.cos(Math.PI * 2 / playerC * i + adjust)
+            let y = SCREEN_H / 2 - 38 * RATIO + radiusH * Math.sin(Math.PI * 2 / playerC * i + adjust) - 10 * RATIO
             let key = "player" + players[i]["discord_id"]
             keys.push(key)
             if (key in elements && elements[key]) {
@@ -361,11 +361,12 @@ function drawStatus(message) {
                     infos,
                     i % playerC,
                     buttons,
-                    100,
+                    65 * RATIO,
                     x,
                     y,
                     button_click,
-                    show_role_description
+                    show_role_description,
+                    RATIO
                 )
                 elements[key] = player
             }
@@ -410,7 +411,7 @@ function drawStatus(message) {
         }
         if (!elements[key]) {
             let phase = new VoteShow(
-                key, buttons, SCREEN_W * 0.05, SCREEN_W * 0.946,
+                key, buttons, 50 * RATIO, SCREEN_W - 50 * RATIO,
                 20 + SCREEN_W * 0.05 / 356 * 122 * count, result
             )
             elements[key] = phase
@@ -672,12 +673,14 @@ function drawHandButton() {
                 if (button_key == "") {
                     continue
                 }
+                let ruleW = 230 * RATIO
+                let y = (SCREEN_H - ruleW * 0.6) / 2 - 30 * RATIO
                 if (!elements[button_key]) {
                     let button = new Button(
                         title, buttons, button_click,
-                        120,
-                        (SCREEN_W - 300) / 2 - 30 - 120 - 120 * Math.floor(count / 4),
-                        (SCREEN_H - 200) / 2 - 30 + (count % 4) * 40,
+                        80 * RATIO,
+                        (SCREEN_W - ruleW) / 2 - 80 * RATIO * 1.1 - 80 * RATIO * Math.floor(count / 4),
+                        y + 10 * RATIO + (count % 4) * (80 * RATIO / 132 * 45),
                         actions[j]
                     )
                     elements[button_key] = button
@@ -725,13 +728,15 @@ function drawCoButtons() {
                 if (button_key == "") {
                     continue
                 }
+                let ruleW = 230 * RATIO
+                let y = (SCREEN_H - ruleW * 0.6) / 2 - 30 * RATIO
                 let role = rolename2token(actions[j].split(":")[1])
                 if (!elements[button_key]) {
                     let button = new Button(
                         role + title, buttons, button_click,
-                        120,
-                        (SCREEN_W - 300) / 2 + 300 + 30 + 120 * Math.floor(count / 4),
-                        (SCREEN_H - 200) / 2 - 30 + (count % 4) * 40,
+                        80 * RATIO,
+                        (SCREEN_W - ruleW) / 2 + ruleW + 80 * RATIO * 0.1 + 80 * RATIO * Math.floor(count / 4),
+                        y + 10 * RATIO + (count % 4) * (80 * RATIO / 132 * 45),
                         actions[j], true, infos
                     )
                     elements[button_key] = button

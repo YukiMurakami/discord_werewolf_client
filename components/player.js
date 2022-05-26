@@ -2,7 +2,7 @@ import {Button} from "./button.js"
 import { jpnname2engname } from "../config.js";
 
 export class Player {
-    constructor(infos, index, parent, width, x, y, func, role_func) {
+    constructor(infos, index, parent, width, x, y, func, role_func, ratio) {
         this.infos = infos
         this.index = index
         this.parent = parent;
@@ -27,6 +27,8 @@ export class Player {
         this.role_icons = []
         this.hand = null;
         this.counter = null;
+
+        this.ratio = ratio
     }
 
     draw(x, y) {
@@ -53,7 +55,7 @@ export class Player {
             this.element.style.height = this.width * 1.2
             this.element.style.borderRadius = "8%";
             this.element.style.backgroundColor = "rgba(0,0,0,0.7)"
-            this.element.style.borderWidth = "4px"
+            this.element.style.borderWidth = (3 * this.ratio).toString() + "px"
             this.element.style.borderStyle = "solid"
             this.element.style.borderColor = this.participateColor
             this.element.id = players[this.index]["discord_id"]
@@ -90,11 +92,12 @@ export class Player {
             let counter = document.createElement("div")
             counter.innerHTML = "12"
             counter.style.textAlign = "center"
-            counter.style.fontSize = "150%"
+            counter.style.fontSize = (12 * this.ratio).toString() + "px"
             counter.style.color = "#000000"
             counter.style.position = "absolute"
             counter.style.width = this.width * 0.3
-            counter.style.top = this.width * 0.05
+            counter.style.top = this.width * 0.08
+            counter.style.left = this.width * 0.01
             this.element.appendChild(counter)
             this.counter = counter
 
@@ -122,7 +125,7 @@ export class Player {
             let index = document.createElement("div")
             index.innerHTML = (this.index + 1).toString()
             index.style.textAlign = "center"
-            index.style.fontSize = "75%"
+            index.style.fontSize = (8 * this.ratio).toString() + "px"
             index.style.fontWeight = "bold"
             index.style.color ="#ffffff"
             // index.style.color = this.participateColor
@@ -140,13 +143,14 @@ export class Player {
             this.element.appendChild(index)
 
             let mes = document.createElement("div")
-            mes.innerHTML = ""
+            this.element.appendChild(mes)
+            mes.innerHTML = "a"
             mes.style.textAlign = "center"
-            mes.style.fontSize = "70%"
+            mes.style.fontSize = (8 * this.ratio).toString() + "px"
             mes.style.color = "#ffffff"
             mes.style.position = "absolute"
             mes.style.width = this.width
-            this.element.appendChild(mes)
+            
             this.mes = mes
         }
 
@@ -171,7 +175,7 @@ export class Player {
 
         let vote_count = ""
         if (players[this.index]["voted_count"] > 0) {
-            vote_count = "<font size='3'>(" + players[this.index]["voted_count"].toString() + ")</font>"
+            vote_count = "(" + players[this.index]["voted_count"].toString() + ")"
         }
         let already_vote = ""
         if (this.infos["game_status"]["status"] == "VOTE") {
@@ -198,7 +202,7 @@ export class Player {
         }
         if (!players[this.index]["live"]) {
             this.mes.style.color = this.outColor
-            this.element.style.borderWidth = "2px"
+            this.element.style.borderWidth = (1.5 * this.ratio).toString() + "px"
         }
         if (players[this.index]["disconnect"]) {
             this.mes.style.color = this.disconnectColor
