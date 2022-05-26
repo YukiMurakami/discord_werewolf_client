@@ -424,7 +424,7 @@ function drawStatus(message) {
     if (!elements["rolelist_button"]) {
         let button = new Button(
             "役職一覧", buttons, button_click,
-            120, SCREEN_W - 140, SCREEN_H - 50, "rolelist")
+            80 * RATIO, SCREEN_W - 80 * RATIO * 1.2, SCREEN_H - 80 * RATIO / 132 * 45 * 1.2 , "rolelist")
         elements["rolelist_button"] = button
     }
     elements["rolelist_button"].draw()
@@ -560,7 +560,8 @@ function drawAfternoon() {
     if (!elements["timer_stop_button"]) {
         let button = new Button(
             "一時停止", buttons, button_click,
-            120, SCREEN_W - 140, SCREEN_H - 50 - 50, "timer_stop:true")
+            80 * RATIO, SCREEN_W - 80 * RATIO * 1.2,
+            SCREEN_H - 80 * RATIO / 132 * 45 * 1.2 * 2, "timer_stop:true")
         elements["timer_stop_button"] = button
     }
     if (status["timer_stop"]) {
