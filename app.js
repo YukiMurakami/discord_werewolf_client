@@ -28,7 +28,8 @@ let infos = {
     "rolecard_rotate": false,
     "volume": 0.2,
     "now_status": "offline",
-    "playerids": []
+    "playerids": [],
+    "zindex": 10000
 }
 let elements = {
     "background": null,

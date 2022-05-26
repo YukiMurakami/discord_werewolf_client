@@ -130,6 +130,10 @@ export class Confirmation {
             this.mes.hidden = false
             this.ok_button.element.hidden = false
             this.ng_button.element.hidden = false
+            this.element.style.zIndex = this.infos["zindex"]
+            this.ok_button.element.style.zIndex = this.infos["zindex"] + 1
+            this.ng_button.element.style.zIndex = this.infos["zindex"] + 1
+            this.infos["zindex"] += 10000
         } else {
             this.element.hidden = true
             this.mes.hidden = true
