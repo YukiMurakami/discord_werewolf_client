@@ -899,7 +899,8 @@ function drawSetting() {
     if (!elements["logout_button"]) {
         let button = new Button(
             "退出", buttons, button_click,
-            120, SCREEN_W - 140, SCREEN_H - 100, "logout", true, infos)
+            80 * RATIO, SCREEN_W - 80 * RATIO * 1.2,
+            SCREEN_H - 80 * RATIO / 132 * 45 * 1.2 * 2, "logout", true, infos)
         elements["logout_button"] = button
     }
     elements["logout_button"].draw()
