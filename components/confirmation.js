@@ -102,7 +102,7 @@ export class Confirmation {
             this.element.style.borderColor = "#eeeeee"
 
             this.mes = document.createElement("div")
-            this.mes.style.fontSize = "100%"
+            this.mes.style.fontSize = (this.width * 0.35 * 0.14).toString() + "px"
             this.mes.style.color = "#ffffff"
             this.mes.style.position = "absolute"
             this.mes.style.width = this.width
