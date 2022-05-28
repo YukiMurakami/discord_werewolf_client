@@ -762,8 +762,12 @@ function roleCheckAnimation() {
 
     let div = document.createElement("div")
     div.classList.add("card")
-    div.style.left = ((SCREEN_W - 400)/2).toString() + "px"
-    div.style.top = ((SCREEN_H - 400 / 938 * 1125)/2 + 70).toString() + "px"
+    let card_w = 340 * RATIO
+    let card_h = card_w / 938 * 1125
+    div.style.width = card_w
+    div.style.height = card_h
+    div.style.left = ((SCREEN_W - card_w)/2).toString() + "px"
+    div.style.top = ((SCREEN_H - card_h)/2 + 50 * RATIO).toString() + "px"
 
     let omote = document.createElement("div")
     omote.classList.add("omote")
