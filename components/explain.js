@@ -100,6 +100,12 @@ export class Explain {
             } else {
                 message_str += "朝になりました。" + name + "が無惨な姿で発見されました。"
             }
+            if (status["live_baker_flag"] == "live") {
+                message_str += "<br>今日も美味しいパンが焼けました。"
+            }
+            if (status["live_baker_flag"] == "dead") {
+                message_str += "<br>今日はパンが焼けませんでした。"
+            }
         }
         
         if (!this.element) {

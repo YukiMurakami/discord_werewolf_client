@@ -129,6 +129,7 @@ export class RoleMenu {
             "mason",
             "cultist",
             "fox",
+            "baker"
         ]
         if (!this.element) {
             if(this.show_button) {

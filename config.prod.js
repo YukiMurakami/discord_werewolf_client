@@ -13,6 +13,7 @@ export function rolename2token(rolename) {
         "mason": "共",
         "cultist": "信",
         "fox": "狐",
+        "baker": "パ"
     }
     return dic[rolename]
 }
@@ -28,6 +29,7 @@ export function jpnname2engname(rolename) {
         "共有者": "mason",
         "狂信者": "cultist",
         "妖狐": "fox",
+        "パン屋": "baker",
         "?": "back_card"
     }
     return dic[rolename]
@@ -98,6 +100,12 @@ export function engname2description(rolename) {
             "team":team["fox"],
             "victory_condition":victory_condition["fox"],
             "description":"占い師に占われると死ぬが、人狼に襲撃されても死なない。また人間にも人狼にもカウントされない。<br>気付かれずに最後まで生き残ろう。",
+        },
+        "baker": {
+            "name":"パン屋",
+            "team":team["human"],
+            "victory_condition":victory_condition["human"],
+            "description":"生存していれば毎朝「今日も美味しいパンが焼けました」と表示される。"
         }
     }
     return dic[rolename]
