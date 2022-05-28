@@ -922,13 +922,13 @@ function drawSetting() {
 // 役職説明を表示する
 export function show_role_description(e){
     if(this.role != "back_card"){
-        let descriptionW = 250;
-        let y = (SCREEN_H - descriptionW * 0.6) / 2 + 80
+        let descriptionW = 250 * RATIO;
+        let y = SCREEN_H - descriptionW * 0.9 - 30 * RATIO
         let roledescription = new RoleDescription(
             document.getElementById("buttons"),
-            descriptionW * 1.4,
-            30,
-            y)
+            descriptionW,
+            33 * RATIO,
+            y, RATIO)
         roledescription.draw(this.showflag,this.role);
     }
 }

@@ -1,7 +1,7 @@
 import {engname2description} from "../config.js"
 
 export class RoleDescription {
-    constructor(parent, width, x, y) {
+    constructor(parent, width, x, y, ratio) {
         this.parent = parent;
         this.element = null;
         this.width = width;
@@ -9,6 +9,7 @@ export class RoleDescription {
         this.y = y;
         this.title = null;
         this.mes = null;
+        this.ratio = ratio
     }
 
     draw(showflag, role) {
@@ -24,7 +25,7 @@ export class RoleDescription {
             this.element.style.position = "absolute"
             this.parent.appendChild(this.element)
             this.element.style.width = this.width
-            this.element.style.height = this.width * 0.9
+            this.element.style.height = this.width * 0.96
             this.element.style.borderRadius = "3%";
             this.element.style.backgroundColor = "rgba(0,0,0,0.7)"
             this.element.style.left = this.x.toString() + "px"
@@ -38,28 +39,30 @@ export class RoleDescription {
             card.style.backgroundImage = "url(" + "./images/cards/" + role + ".png" + ")"
             card.style.backgroundSize = "100%"
             card.style.position = "absolute"
-            card.style.width = this.width * 0.3
-            card.style.height = this.width * 0.3 / 938 * 1125
-            card.style.top = this.width * 0.3 / 938 * 1125 * 0.05
-            card.style.left = this.width * 0.55
+            card.style.width = this.width * 0.24
+            card.style.height = this.width * 0.24 / 938 * 1125
+            card.style.top = 4 * this.ratio
+            card.style.left = this.width * 0.65
             this.element.append(card)
 
-            this.title = document.createElement("p")
-            this.title.style.fontSize = "200%"
+            this.title = document.createElement("div")
+            this.title.style.fontSize = (30 * this.ratio).toString() + "px"
             this.title.style.position = "absolute"
-            this.title.style.width = this.width
-            this.title.style.top = this.width * 0.9 * 0.1
-            this.title.style.left = this.width * 0.1
+            this.title.style.textAlign = "center"
+            this.title.style.width = this.width * 0.6
+            this.title.style.height = this.width * 0.24 / 938 * 1125
+            this.title.style.top = 20 * this.ratio
+            this.title.style.left = 0
             this.title.style.color = "#eeeeee"
             this.title.style.padding = "0 0 0 10"
             this.element.appendChild(this.title)
             console.log(this.title)
 
             this.mes = document.createElement("p")
-            this.mes.style.fontSize = "85%"
+            this.mes.style.fontSize = (10 * 0.9 * this.ratio).toString() + "px"
             this.mes.style.position = "absolute"
             this.mes.style.width = this.width * 0.95
-            this.mes.style.top = this.width * 0.9 * 0.4
+            this.mes.style.top = this.width * 0.24 / 938 * 1125 + 5 * this.ratio
             this.mes.style.color = "#eeeeee"
             this.mes.style.padding = "0 0 0 10"
             this.element.appendChild(this.mes)
