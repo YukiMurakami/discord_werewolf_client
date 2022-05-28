@@ -869,24 +869,27 @@ function drawSetting() {
         infos["roleset_open"] = false
     }
     let count = 0;
+    let rule_w = 230 * RATIO
+    let rule_h = rule_w * 0.55
+    let y = (SCREEN_H - rule_w * 0.6) / 2 - 30 * RATIO
     for (let key in dic) {
         if (!elements[dic[key][1]]) {
             //console.log("make new button", key)
             if (key == "game_start") {
                 let button = new Button(
                     dic[key][0], buttons, button_click,
-                    120,
-                    count % 3 * 120 + (SCREEN_W - 300) / 2 - 30,
-                    (count / 3 | 0) * 40 + (SCREEN_H - 200) / 2 + 160,
+                    90 * RATIO,
+                    (-1.5 + count % 3) * 90 * RATIO * 1.1 + SCREEN_W / 2,
+                    (count / 3 | 0) * 90 * RATIO / 132 * 45 * 1.1 + y + 10 * RATIO + rule_h,
                     key, true, infos
                 )
                 elements[dic[key][1]] = button
             } else {
                 let button = new Button(
                     dic[key][0], buttons, button_click,
-                    120,
-                    count % 3 * 120 + (SCREEN_W - 300) / 2 - 30,
-                    (count / 3 | 0) * 40 + (SCREEN_H - 200) / 2 + 160,
+                    90 * RATIO,
+                    (-1.5 + count % 3) * 90 * RATIO * 1.1 + SCREEN_W / 2,
+                    (count / 3 | 0) * 90 * RATIO / 132 * 45 * 1.1 + y + 10 * RATIO + rule_h,
                     key
                 )
                 elements[dic[key][1]] = button
