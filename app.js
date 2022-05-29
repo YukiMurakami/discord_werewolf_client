@@ -426,7 +426,7 @@ function drawStatus(message) {
         if (!elements[key]) {
             let phase = new VoteShow(
                 key, buttons, 50 * RATIO, SCREEN_W - 50 * RATIO,
-                20 + SCREEN_W * 0.05 / 356 * 122 * count, result
+                20 + SCREEN_W * 0.05 / 356 * 122 * count, result, RATIO
             )
             elements[key] = phase
         }

@@ -31,7 +31,14 @@ export class Phase {
             this.mes.style.fontSize = (16 * this.ratio).toString() + "px"
         }
         this.mes.innerHTML = this.title
-        this.mes.style.left = ((this.width - this.mes.clientWidth) / 2).toString() + "px"
-        this.mes.style.top = ((this.width / 356 * 120 - this.mes.clientHeight) / 2).toString() + "px"
+        this.mes.style.left = this.width * 0.14
+        this.mes.style.top = this.width / 356 * 120 * 0.1
+        this.mes.style.width = this.width * 0.72
+        this.mes.style.height = this.width / 356 * 120 * 0.8
+        if (this.title.length > 5) {
+            this.mes.style.fontSize = (10 * this.ratio).toString() + "px"
+            this.mes.style.top = this.width / 356 * 120 * 0.25
+            this.mes.style.height = this.width / 356 * 120 * 0.5
+        }
     }
 }

@@ -1,5 +1,5 @@
 export class VoteShow {
-    constructor(title, parent, width, x, y, result) {
+    constructor(title, parent, width, x, y, result, ratio) {
         this.title = title;
         this.parent = parent;
         this.element = null;
@@ -11,6 +11,7 @@ export class VoteShow {
         this.last_result = result
         this.counter = 0;
         this.eventlist = [];
+        this.ratio = ratio
     }
 
     mouseout_vote(e) {
@@ -36,9 +37,13 @@ export class VoteShow {
             this.mes = document.createElement("div")
             this.element.appendChild(this.mes)
             this.mes.style.color = "#000000"
+            this.mes.style.backgroundColor = "rgba(128,128,128,0.5)"
             this.mes.style.textAlign = "center"
-            this.element.style.position = "absolute"
-            this.mes.style.padding = "7% 16% 0 16%"
+            this.mes.style.left = this.width * 0.1
+            this.mes.style.width = this.width * 0.8
+            this.mes.style.top = this.width / 356 * 120 * 0.1
+            this.mes.style.height = this.width / 356 * 120 * 0.8
+            this.mes.style.position = "absolute"
 
             this.addlistener("mouseover", mouseover_vote, {result: this.result})
 
@@ -55,9 +60,9 @@ export class VoteShow {
         }
         this.mes.innerHTML = this.title
         if (this.title.length >= 6) {
-            this.mes.style.fontSize = Number(this.element.clientHeight / 45 * 100 * 0.1).toString() + "%"
+            this.mes.style.fontSize = (5 * this.ratio).toString() + "px"
         } else {
-            this.mes.style.fontSize = Number(this.element.clientHeight / 45 * 100).toString() + "%"
+            this.mes.style.fontSize = (7 * this.ratio).toString() + "px"
         }
         if (this.result.length <= 0) {
             this.element.hidden = true
