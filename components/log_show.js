@@ -145,7 +145,8 @@ function mouseover_vote() {
         "狂人": "#ff9900",
         "妖狐": "#ffff00",
         "共有者": "#ff88ff",
-        "狂信者": "#ff9900"
+        "狂信者": "#ff9900",
+        "猫又": "#ff8888",
     }
     for (let i=0;i<players.length + 1;i++) {
         let td = document.createElement("td")
@@ -213,6 +214,8 @@ function mouseover_vote() {
                 attack_ids = []
                 let fox_id = null
                 let guard_id = null
+                let cat_attack_wolf_id = null
+                let attack_cat_id = null
                 let key = day.toString() + "-NIGHT"
                 if (key in this.result) {
                     for (let i=0;i<this.result[key].length;i++) {
@@ -231,6 +234,10 @@ function mouseover_vote() {
                             status[src] = get_name(div[2], players)
                             if (roles[div[2]] != "妖狐") {
                                 attack_ids.push(div[2])
+                            }
+                            if (roles[div[2]] == "猫又") {
+                                cat_attack_wolf_id = div[1]
+                                attack_cat_id = div[2]
                             }
                         }
                         if (div[0] == "bodyguard") {
@@ -251,8 +258,18 @@ function mouseover_vote() {
                 }
                 if (guard_id) {
                     if (attack_ids.indexOf(guard_id) != -1) {
-                        attack_ids = attack_ids.splice(attack_ids.indexOf(guard_id), 1)
+                        console.log(attack_ids, attack_ids.indexOf(guard_id))
+                        attack_ids.splice(attack_ids.indexOf(guard_id), 1)
+                        console.log(attack_ids)
                     }
+                    if (attack_cat_id) {
+                        if (attack_cat_id == guard_id) {
+                            cat_attack_wolf_id = null
+                        }
+                    }
+                }
+                if(cat_attack_wolf_id) {
+                    attack_ids.push(cat_attack_wolf_id)
                 }
                 if(fox_id) {
                     attack_ids.push(fox_id)
@@ -270,6 +287,17 @@ function mouseover_vote() {
                             lives[src] = false
                             last_excution = div[1]
                         }
+                    }
+                }
+                for (let i=0;i<this.infos["game_status"]["companions"].length;i++) {
+                    let companion = this.infos["game_status"]["companions"][i]
+                    let div = companion.split(":")
+                    if (div[0] == "cat") {
+                        let src = discord_ids.indexOf(div[1])
+                        if (lives[src]) {
+                            status[src] = "道連れ"
+                        }
+                        lives[src] = false
                     }
                 }
             }

@@ -13,7 +13,8 @@ export function rolename2token(rolename) {
         "mason": "共",
         "cultist": "信",
         "fox": "狐",
-        "baker": "パ"
+        "baker": "パ",
+        "cat": "猫",
     }
     return dic[rolename]
 }
@@ -30,6 +31,7 @@ export function jpnname2engname(rolename) {
         "狂信者": "cultist",
         "妖狐": "fox",
         "パン屋": "baker",
+        "猫又": "cat",
         "?": "back_card"
     }
     return dic[rolename]
@@ -106,6 +108,12 @@ export function engname2description(rolename) {
             "team":team["human"],
             "victory_condition":victory_condition["human"],
             "description":"生存していれば毎朝「今日も美味しいパンが焼けました」と表示される。"
+        },
+        "cat": {
+            "name":"猫又",
+            "team":team["human"],
+            "victory_condition":victory_condition["human"],
+            "description":"処刑されると村人陣営からランダムに道連れが発生する。人狼に夜襲撃され死亡した場合、襲撃した狼を道連れにする（2死体となり区別不能）。"
         }
     }
     return dic[rolename]

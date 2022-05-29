@@ -21,6 +21,19 @@ export class Explain {
             let name = discord_id2name(excution_id, players)
             message_str = "本日処刑されるのは" + name + "さんです。遺言をどうぞ。<br>遺言が完了したら遺言完了ボタンを押してください。"
         }
+        if (status["status"] == "NIGHT") {
+            let companions = status["companions"]
+            for (let i=0;i<companions.length;i++) {
+                let div = companions[i].split(":")
+                if (div[0] == "cat") {
+                    let name = discord_id2name(div[1], players)
+                    if (message_str != "") {
+                        message_str += "<br>"
+                    }
+                    message_str += name + "さんが道連れで死亡しました。"
+                }
+            }
+        }
         if (status["status"] == "VOTE") {
             let vote_count = status["vote"]
             if (vote_count == 0) {
