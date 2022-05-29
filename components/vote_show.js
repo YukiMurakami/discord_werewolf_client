@@ -37,7 +37,6 @@ export class VoteShow {
             this.mes = document.createElement("div")
             this.element.appendChild(this.mes)
             this.mes.style.color = "#000000"
-            this.mes.style.backgroundColor = "rgba(128,128,128,0.5)"
             this.mes.style.textAlign = "center"
             this.mes.style.left = this.width * 0.1
             this.mes.style.width = this.width * 0.8
