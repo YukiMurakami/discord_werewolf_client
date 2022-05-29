@@ -216,7 +216,10 @@ export class Player {
             this.hand.hidden = true
             this.counter.hidden = true
         }
-        let actions = my_player["actions"]
+        let actions = []
+        if (my_player) {
+            actions = my_player["actions"]
+        }
         for (let key in this.buttons) {
             this.buttons[key].element.hidden = true
         }

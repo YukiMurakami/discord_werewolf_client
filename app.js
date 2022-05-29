@@ -173,23 +173,36 @@ function drawTitle() {
     mes.style.position = "absolute"
     mes.style.textAlign = "center"
     mes.style.left = ((SCREEN_W - mes.clientWidth) / 2).toString() + "px"
-    mes.style.top = ((SCREEN_H - mes.clientHeight) / 2).toString() + "px"
+    mes.style.top = ((SCREEN_H - mes.clientHeight) / 2 - 70 * RATIO).toString() + "px"
 
-    let button = new Button("開始", buttons, () => {
-        connection = new WebSocket(URI);
-        connection.onopen = function(event) {
-            //console.log("connect ok");
-            sendData({
-                "message": "get_free_account",
-            });
-        }
-        connection.onmessage = onMessage;
-        connection.onclose = onClose;
-        connection.onerror = onError;
-        }, 150 * RATIO,
-        (SCREEN_W - 150 * RATIO) / 2,
-        (SCREEN_H - 150 * RATIO / 132 * 45) / 2 + 100 * RATIO, null)
-    button.draw()
+    let mode = [["開始", "get_free_account"], ["観戦", "observe"]]
+    for (let i=0;i<mode.length;i++) {
+        let button = new Button(mode[i][0], buttons, () => {
+            connection = new WebSocket(URI);
+            if (mode[i][1] == "observe") {
+                connection.onopen = function(event) {
+                    //console.log("connect ok");
+                    sendData({
+                        "message": mode[i][1],
+                        "discord_id": "observe"
+                    });
+                }
+            } else {
+                connection.onopen = function(event) {
+                    //console.log("connect ok");
+                    sendData({
+                        "message": mode[i][1],
+                    });
+                }
+            }
+            connection.onmessage = onMessage;
+            connection.onclose = onClose;
+            connection.onerror = onError;
+            }, 150 * RATIO,
+            (SCREEN_W - 150 * RATIO) / 2,
+            (SCREEN_H - 150 * RATIO / 132 * 45) / 2 + (20 + 80 * i) * RATIO, null)
+        button.draw()
+    }
 }
 
 function drawAccountSelect() {
@@ -559,17 +572,19 @@ function drawAfternoon() {
     }
 
     // タイマー停止ボタン
-    if (!elements["timer_stop_button"]) {
-        let button = new Button(
-            "一時停止", buttons, button_click,
-            80 * RATIO, SCREEN_W - 80 * RATIO * 1.2,
-            SCREEN_H - 80 * RATIO / 132 * 45 * 1.2 * 2, "timer_stop:true")
-        elements["timer_stop_button"] = button
-    }
-    if (status["timer_stop"]) {
-        elements["timer_stop_button"].draw("再開", "timer_stop:false")
-    } else {
-        elements["timer_stop_button"].draw("一時停止", "timer_stop:true")
+    if (infos["discord_id"].indexOf("observe_") == -1) {
+        if (!elements["timer_stop_button"]) {
+            let button = new Button(
+                "一時停止", buttons, button_click,
+                80 * RATIO, SCREEN_W - 80 * RATIO * 1.2,
+                SCREEN_H - 80 * RATIO / 132 * 45 * 1.2 * 2, "timer_stop:true")
+            elements["timer_stop_button"] = button
+        }
+        if (status["timer_stop"]) {
+            elements["timer_stop_button"].draw("再開", "timer_stop:false")
+        } else {
+            elements["timer_stop_button"].draw("一時停止", "timer_stop:true")
+        }
     }
 }
 
@@ -905,14 +920,16 @@ function drawSetting() {
         count += 1;
     }
     // 退出ボタン
-    if (!elements["logout_button"]) {
-        let button = new Button(
-            "退出", buttons, button_click,
-            80 * RATIO, SCREEN_W - 80 * RATIO * 1.2,
-            SCREEN_H - 80 * RATIO / 132 * 45 * 1.2 * 2, "logout", true, infos)
-        elements["logout_button"] = button
+    if (infos["discord_id"].indexOf("observe_") == -1) {
+        if (!elements["logout_button"]) {
+            let button = new Button(
+                "退出", buttons, button_click,
+                80 * RATIO, SCREEN_W - 80 * RATIO * 1.2,
+                SCREEN_H - 80 * RATIO / 132 * 45 * 1.2 * 2, "logout", true, infos)
+            elements["logout_button"] = button
+        }
+        elements["logout_button"].draw()
     }
-    elements["logout_button"].draw()
 
     if (!elements["rolemenu"]) {
         let rolemenu = new RoleMenu(
