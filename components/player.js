@@ -28,6 +28,8 @@ export class Player {
         this.hand = null;
         this.counter = null;
 
+        this.vote_counter = null;
+
         this.ratio = ratio
     }
 
@@ -152,6 +154,16 @@ export class Player {
             mes.style.width = this.width
             
             this.mes = mes
+
+            this.vote_counter = document.createElement("div")
+            this.element.append(this.vote_counter)
+            this.vote_counter.innerHTML = "<b>" + this.index.toString() + "</b>"
+            this.vote_counter.style.textAlign = "center"
+            this.vote_counter.style.fontSize = (26 * this.ratio).toString() + "px"
+            this.vote_counter.className = "fuchidori"
+            this.vote_counter.style.position = "absolute"
+            this.vote_counter.style.width = this.width
+            this.vote_counter.style.top = -24 * this.ratio
         }
 
         this.element.style.left = this.x.toString() + "px"
@@ -173,9 +185,11 @@ export class Player {
         }
         this.rolecard.style.backgroundImage = "url(" + "./images/cards/" + role + ".png" + ")"
 
-        let vote_count = ""
         if (players[this.index]["voted_count"] > 0) {
-            vote_count = "(" + players[this.index]["voted_count"].toString() + ")"
+            this.vote_counter.innerHTML = "<b>" + players[this.index]["voted_count"].toString() + "</b>"
+            this.vote_counter.hidden = false
+        } else {
+            this.vote_counter.hidden = true
         }
         let already_vote = ""
         if (this.infos["game_status"]["status"] == "VOTE") {
@@ -190,7 +204,7 @@ export class Player {
             }
         }
 
-        this.mes.innerHTML = players[this.index]["name"] + vote_count + already_vote + skip
+        this.mes.innerHTML = players[this.index]["name"] + already_vote + skip
         if (already_vote == "" && skip == "") {
             this.mes.style.bottom = this.width * 0.1
         } else {

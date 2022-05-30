@@ -59,3 +59,11 @@ th,td {
 table {
     border-collapse:  collapse; /* セルの線を重ねる */
 }
+
+.fuchidori {
+    color: #f00;
+    text-shadow:1px 1px 0 #DDD, -1px -1px 0 #DDD,
+                -1px 1px 0 #DDD, 1px -1px 0 #DDD,
+                0px 1px 0 #DDD,  0-1px 0 #DDD,
+                -1px 0 0 #DDD, 1px 0 0 #DDD;
+}
