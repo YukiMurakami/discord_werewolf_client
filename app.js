@@ -750,12 +750,13 @@ function drawCoButtons() {
                 let ruleW = 230 * RATIO
                 let y = (SCREEN_H - ruleW * 0.6) / 2 - 30 * RATIO
                 let role = rolename2token(actions[j].split(":")[1])
+                let button_w = 60 * RATIO
                 if (!elements[button_key]) {
                     let button = new Button(
                         role + title, buttons, button_click,
-                        80 * RATIO,
-                        (SCREEN_W - ruleW) / 2 + ruleW + 80 * RATIO * 0.1 + 80 * RATIO * Math.floor(count / 4),
-                        y + 10 * RATIO + (count % 4) * (80 * RATIO / 132 * 45),
+                        button_w,
+                        (SCREEN_W - ruleW) / 2 + ruleW + button_w * 0.1 + button_w * Math.floor(count / 4),
+                        y + 10 * RATIO + (count % 4) * (button_w / 132 * 45),
                         actions[j], true, infos
                     )
                     elements[button_key] = button
