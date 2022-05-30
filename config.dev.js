@@ -15,6 +15,7 @@ export function rolename2token(rolename) {
         "fox": "狐",
         "baker": "パ",
         "cat": "猫",
+        "immoralist": "背"
     }
     return dic[rolename]
 }
@@ -32,6 +33,7 @@ export function jpnname2engname(rolename) {
         "妖狐": "fox",
         "パン屋": "baker",
         "猫又": "cat",
+        "背徳者": "immoralist",
         "?": "back_card"
     }
     return dic[rolename]
@@ -114,6 +116,12 @@ export function engname2description(rolename) {
             "team":team["human"],
             "victory_condition":victory_condition["human"],
             "description":"処刑されると村人陣営からランダムに道連れが発生する。人狼に夜襲撃され死亡した場合、襲撃した狼を道連れにする（2死体となり区別不能）。"
+        },
+        "immoralist": {
+            "name":"背徳者",
+            "team":team["fox"],
+            "victory_condition":victory_condition["fox"],
+            "description":"妖狐を崇拝する人間。妖狐陣営の勝利を目指す。<br>背徳者は妖狐が誰か知っているが、妖狐は背徳者が誰か知らない。妖狐が全滅すると自身も後を追って自殺する。"
         }
     }
     return dic[rolename]

@@ -130,7 +130,8 @@ export class RoleMenu {
             "cultist",
             "fox",
             "baker",
-            "cat"
+            "cat",
+            "immoralist",
         ]
         if (!this.element) {
             if(this.show_button) {
@@ -155,7 +156,7 @@ export class RoleMenu {
             for (let i=0;i<roles.length;i++) {
                 let card = new RoleSetter(
                     this.infos, roles[i], this.element,
-                    80 * this.ratio, 80 * this.ratio * i, 0,
+                    70 * this.ratio, 70 * this.ratio * i, 0,
                     this.func , this.show_button, this.ratio
                 )
                 this.cards.push(card)

@@ -287,17 +287,22 @@ function mouseover_vote() {
                             lives[src] = false
                             last_excution = div[1]
                         }
-                    }
-                }
-                for (let i=0;i<this.infos["game_status"]["companions"].length;i++) {
-                    let companion = this.infos["game_status"]["companions"][i]
-                    let div = companion.split(":")
-                    if (div[0] == "cat") {
-                        let src = discord_ids.indexOf(div[1])
-                        if (lives[src]) {
-                            status[src] = "道連れ"
+                        if (div[0] == "companion") {
+                            if (div[1] == "immoralist") {
+                                let src = discord_ids.indexOf(div[2])
+                                if (lives[src]) {
+                                    status[src] = "後追い"
+                                }
+                                lives[src] = false
+                            }
+                            if (div[1] == "cat") {
+                                let src = discord_ids.indexOf(div[2])
+                                if (lives[src]) {
+                                    status[src] = "道連れ"
+                                }
+                                lives[src] = false
+                            }
                         }
-                        lives[src] = false
                     }
                 }
             }
@@ -307,6 +312,20 @@ function mouseover_vote() {
                         let src = discord_ids.indexOf(attack_ids[i])
                         status[src] = "襲撃死"
                         lives[src] = false
+                    }
+                }
+                let key2 = day.toString() + "-MORNING"
+                if (key2 in this.result) {
+                    for (let i=0;i<this.result[key2].length;i++) {
+                        let action = this.result[key2][i]
+                        let div = action.split(":")
+                        if (div[0] == "companion") {
+                            if (div[1] == "immoralist") {
+                                let src = discord_ids.indexOf(div[2])
+                                status[src] = "襲撃死"
+                                lives[src] = false
+                            }
+                        }
                     }
                 }
                 for (let i=0;i<7;i++) {

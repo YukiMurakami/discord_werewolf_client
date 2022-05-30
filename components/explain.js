@@ -32,6 +32,13 @@ export class Explain {
                     }
                     message_str += name + "さんが道連れで死亡しました。"
                 }
+                if (div[0] == "immoralist") {
+                    let name = discord_id2name(div[1], players)
+                    if (message_str != "") {
+                        message_str += "<br>"
+                    }
+                    message_str += name + "さんが後を追って自殺しました。"
+                }
             }
         }
         if (status["status"] == "VOTE") {
