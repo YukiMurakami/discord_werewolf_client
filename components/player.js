@@ -30,6 +30,8 @@ export class Player {
 
         this.vote_counter = null;
 
+        this.vote_mark = null;
+
         this.ratio = ratio
     }
 
@@ -71,6 +73,15 @@ export class Player {
             image.style.borderRadius = "50%";
             this.element.appendChild(image)
             this.avator = image
+
+            this.vote_mark = document.createElement("img")
+            this.vote_mark.src = "./images/ui/vote_mark.png"
+            this.vote_mark.style.transform = "rotate(40deg)"
+            this.vote_mark.style.width = this.width * 0.4
+            this.vote_mark.style.position = "absolute"
+            this.vote_mark.style.left = this.width * 0.7
+            this.vote_mark.style.bottom = this.width * -0.2
+            this.element.appendChild(this.vote_mark)
 
             let death = document.createElement("img")
             death.src = "./images/ui/dead.png"
@@ -191,11 +202,21 @@ export class Player {
         } else {
             this.vote_counter.hidden = true
         }
-        let already_vote = ""
+        if (this.infos["game_status"]["status"] != "VOTE" && this.infos["game_status"]["status"] != "EXCUTION") {
+            this.vote_counter.hidden = true
+        }
         if (this.infos["game_status"]["status"] == "VOTE") {
             if (players[this.index]["already_vote"]) {
-                already_vote = "<br>(投票済み)"
+                this.vote_mark.hidden = true
+            } else {
+                if (players[this.index]["live"]) {
+                    this.vote_mark.hidden = false
+                } else {
+                    this.vote_mark.hidden = true
+                }
             }
+        } else {
+            this.vote_mark.hidden = true
         }
         let skip = ""
         if (this.infos["game_status"]["status"] == "AFTERNOON") {
@@ -204,8 +225,8 @@ export class Player {
             }
         }
 
-        this.mes.innerHTML = players[this.index]["name"] + already_vote + skip
-        if (already_vote == "" && skip == "") {
+        this.mes.innerHTML = players[this.index]["name"] + skip
+        if (skip == "") {
             this.mes.style.bottom = this.width * 0.1
         } else {
             this.mes.style.bottom = 0
