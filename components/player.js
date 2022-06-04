@@ -214,7 +214,19 @@ export class Player {
                 this.vote_mark.hidden = true
             } else {
                 if (players[this.index]["live"]) {
-                    this.vote_mark.hidden = false
+                    if (this.infos["game_status"]["vote"] == 0) {
+                        //通常投票
+                        this.vote_mark.hidden = false
+                    } else {
+                        //決選投票 (投票対象者はhidden = true)
+                        if (this.infos["game_status"]["vote_candidates"].indexOf(players[this.index]["discord_id"]) == -1) {
+                            //投票対象ではない
+                            this.vote_mark.hidden = false
+                        } else {
+                            //投票対象
+                            this.vote_mark.hidden = true
+                        }
+                    }
                 } else {
                     this.vote_mark.hidden = true
                 }
