@@ -50,7 +50,7 @@ export class Explain {
                 for (let i=0;i<status["vote_candidates"].length;i++) {
                     vote_targets.push(discord_id2name(status["vote_candidates"][i], players) + "さん")
                 }
-                message_str = vote_targets.join("、") + "が同数で最多得票となったため決選投票を行います。<br>好きな順で３０秒程度ずつ弁明をしていただき、その後再度投票を行ってください。<br>決選投票は終了後一斉に開示します。"
+                message_str = vote_targets.join("、") + "が同数で最多得票となったため決選投票を行います。好きな順で弁明をした後再度投票を行ってください。決選投票は終了後一斉に開示します。"
             }
         }
         let action_results = status["action_results"]
