@@ -884,6 +884,11 @@ function drawSetting() {
         if (status["rule"]["bodyguard"] == "CANNOT_CONSECUTIVE_GUARD") {
             dic["bodyguard_rule_yes"] = ["連続ガード:なし", "bodyguard_rule_button"]
         }
+        if (status["rule"]["first_victim"]) {
+            dic["first_victim_no"] = ["役かけ:あり", "first_victim_button"]
+        } else {
+            dic["first_victim_yes"] = ["役かけ:なし", "first_victim_button"]
+        }
         dic["role_set"] = ["役職", "role_button"]
         dic["game_start"] = ["ゲーム開始", "start_button"]
     } else {

@@ -65,7 +65,11 @@ export class Player {
             this.element.id = players[this.index]["discord_id"]
 
             let image = document.createElement("img")
-            image.src = players[this.index]["avator_url"]
+            if (players[this.index]["avator_url"]) {
+                image.src = players[this.index]["avator_url"]
+            } else {
+                image.src = "./images/ui/first_victim.png"
+            }
             image.style.width = this.width * 0.7
             image.style.position = "absolute"
             image.style.left = this.width * 0.3 / 2
