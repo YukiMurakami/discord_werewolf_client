@@ -66,6 +66,9 @@ export class Sound {
     set_volume(volume) {
         for (let key in this.dic) {
             this.dic[key].volume = volume
+            if (key == "craw") {
+                this.dic[key].volume = volume * 0.5
+            }
         }
     }
 
