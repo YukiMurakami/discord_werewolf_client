@@ -30,7 +30,7 @@ export class Explain {
                     if (message_str != "") {
                         message_str += "<br>"
                     }
-                    message_str += name + "さんが道連れで死亡しました。"
+                    message_str += name + "さんが猫又の道連れで死亡しました。"
                 }
                 if (div[0] == "immoralist") {
                     let name = discord_id2name(div[1], players)
@@ -38,6 +38,13 @@ export class Explain {
                         message_str += "<br>"
                     }
                     message_str += name + "さんが後を追って自殺しました。"
+                }
+                if (div[0] == "queen") {
+                    let name = discord_id2name(div[1], players)
+                    if (message_str != "") {
+                        message_str += "<br>"
+                    }
+                    message_str += name + "さんが後を追って死亡。"
                 }
             }
         }

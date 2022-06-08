@@ -295,6 +295,13 @@ function mouseover_vote() {
                                 }
                                 lives[src] = false
                             }
+                            if (div[1] == "queen") {
+                                let src = discord_ids.indexOf(div[2])
+                                if (lives[src]) {
+                                    status[src] = "後追い"
+                                }
+                                lives[src] = false
+                            }
                             if (div[1] == "cat") {
                                 let src = discord_ids.indexOf(div[2])
                                 if (lives[src]) {
@@ -322,7 +329,12 @@ function mouseover_vote() {
                         if (div[0] == "companion") {
                             if (div[1] == "immoralist") {
                                 let src = discord_ids.indexOf(div[2])
-                                status[src] = "襲撃死"
+                                status[src] = "後追い"
+                                lives[src] = false
+                            }
+                            if (div[1] == "queen") {
+                                let src = discord_ids.indexOf(div[2])
+                                status[src] = "後追い"
                                 lives[src] = false
                             }
                         }

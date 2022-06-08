@@ -15,7 +15,8 @@ export function rolename2token(rolename) {
         "fox": "狐",
         "baker": "パ",
         "cat": "猫",
-        "immoralist": "背"
+        "immoralist": "背",
+        "queen": "女",
     }
     return dic[rolename]
 }
@@ -34,6 +35,7 @@ export function jpnname2engname(rolename) {
         "パン屋": "baker",
         "猫又": "cat",
         "背徳者": "immoralist",
+        "女王": "queen",
         "?": "back_card"
     }
     return dic[rolename]
@@ -122,6 +124,12 @@ export function engname2description(rolename) {
             "team":team["fox"],
             "victory_condition":victory_condition["fox"],
             "description":"妖狐を崇拝する人間。妖狐陣営の勝利を目指す。<br>背徳者は妖狐が誰か知っているが、妖狐は背徳者が誰か知らない。妖狐が全滅すると自身も後を追って自殺する。"
+        },
+        "queen": {
+            "name": "女王",
+            "team": team["human"],
+            "victory_condition": victory_condition["human"],
+            "description": "村人陣営全員が誰が女王か知っている。女王が死亡すると人間カウント全員が後を追って死亡する。"
         }
     }
     return dic[rolename]
