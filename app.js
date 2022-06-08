@@ -755,8 +755,8 @@ function drawCoButtons() {
                     let button = new Button(
                         role + title, buttons, button_click,
                         button_w,
-                        (SCREEN_W - ruleW) / 2 + ruleW + button_w * 0.1 + button_w * Math.floor(count / 4),
-                        y + 10 * RATIO + (count % 4) * (button_w / 132 * 45),
+                        (SCREEN_W - ruleW) / 2 + ruleW + button_w * 0.1 + button_w * Math.floor(count / 5),
+                        y + 10 * RATIO + (count % 5) * (button_w / 132 * 45),
                         actions[j], true, infos
                     )
                     elements[button_key] = button
