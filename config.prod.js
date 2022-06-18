@@ -1,8 +1,8 @@
 export const config = {
-    "URI": "ws://127.0.0.1:60000"
+    "URI": "wss://dominion-gp.jp:31000"
 }
 
-export function rolename2token(rolename) {
+function get_rolename2token_dic() {
     let dic = {
         "villager": "村",
         "werewolf": "狼",
@@ -16,9 +16,25 @@ export function rolename2token(rolename) {
         "baker": "パ",
         "cat": "猫",
         "immoralist": "背",
-        "queen": "女"
+        "queen": "女",
+        "detective": "探",
     }
+    return dic
+}
+
+export function rolename2token(rolename) {
+    let dic = get_rolename2token_dic()
     return dic[rolename]
+}
+
+export function token2engname(token) {
+    let dic = get_rolename2token_dic()
+    for (let key in dic) {
+        if (dic[key] == token) {
+            return key
+        }
+    }
+    return null
 }
 
 export function jpnname2engname(rolename) {
@@ -36,6 +52,7 @@ export function jpnname2engname(rolename) {
         "猫又": "cat",
         "背徳者": "immoralist",
         "女王": "queen",
+        "名探偵": "detective",
         "?": "back_card"
     }
     return dic[rolename]
@@ -45,12 +62,14 @@ export function engname2description(rolename) {
     let victory_condition = {
         "human":"人狼陣営を全滅させる。",
         "werewolf":"村人陣営と人狼の数が同数になる。",
-        "fox":"いずれかの陣営の勝利条件を満たした時に妖狐が生き残っている。"
+        "fox":"いずれかの陣営の勝利条件を満たした時に妖狐が生き残っている。",
+        "detective":"推理ショーで全員の役職をあてる。（単独勝利）"
     }
     let team = {
         "human":"村人陣営",
         "werewolf":"人狼陣営",
-        "fox":"妖狐陣営"
+        "fox":"妖狐陣営",
+        "detective": "名探偵陣営"
     }
     let dic = {
         "villager": {
@@ -130,6 +149,12 @@ export function engname2description(rolename) {
             "team": team["human"],
             "victory_condition": victory_condition["human"],
             "description": "村人陣営全員が誰が女王か知っている。女王が死亡すると人間カウント全員が後を追って死亡する。"
+        },
+        "detective": {
+            "name": "名探偵",
+            "team": team["detective"],
+            "victory_condition": victory_condition["detective"],
+            "description": "投票前に推理ショーを開くことができる。全員の役職を当てられたらその時点で単独勝利。間違えたら恥ずか死。"
         }
     }
     return dic[rolename]

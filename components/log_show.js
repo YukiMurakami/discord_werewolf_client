@@ -312,6 +312,22 @@ function mouseover_vote() {
                         }
                     }
                 }
+                key = day.toString() + "-DETECTIVE_READY"
+                if (key in this.result) {
+                    for (let i=0;i<this.result[key].length;i++) {
+                        let action = this.result[key][i]
+                        let div = action.split(":")
+                        if (div[0] == "companion") {
+                            if (div[1] == "detective") {
+                                let src = discord_ids.indexOf(div[2])
+                                if (lives[src]) {
+                                    status[src] = "恥ずか死"
+                                }
+                                lives[src] = false
+                            }
+                        }
+                    }
+                }
             }
             if (phase == "昼") {
                 if (attack_ids.length > 0) {

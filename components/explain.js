@@ -104,6 +104,15 @@ export class Explain {
                 }
                 message_str += dist_name + "さんを守ります。"
             }
+            if (status["status"] == "AFTERNOON") {
+                if (div[0] == "detective_show") {
+                    let dist_name = discord_id2name(div[2], players)
+                    if (message_str != "") {
+                        message_str += "<br>"
+                    }
+                    message_str += dist_name + "議論終了後に推理ショーをします。推理の準備をしましょう。"
+                }
+            }
         }
         if (status["status"] == "MORNING") {
             let action_results = status["action_results"]
@@ -133,6 +142,16 @@ export class Explain {
             if (status["live_baker_flag"] == "dead") {
                 message_str += "<br>今日はパンが焼けませんでした。"
             }
+        }
+        if (status["status"] == "DETECTIVE") {
+            let detective_id = status["detective"]
+            let name = discord_id2name(detective_id, players)
+            message_str += name + "さんの推理ショーです。" + name + "さんは推理を披露しながら役職を並び替え、最後に完了ボタンを押してください。正解で単独勝利、不正解で恥ずか死します。"
+        }
+        if (status["status"] == "DETECTIVE_READY") {
+            let detective_id = status["detective"]
+            let name = discord_id2name(detective_id, players)
+            message_str += name + "さんの推理の判定は、、、"
         }
         
         if (!this.element) {

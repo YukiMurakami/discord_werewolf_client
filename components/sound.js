@@ -60,6 +60,8 @@ export class Sound {
         this.dic["morning"] = new Audio("./sounds/morning.mp3")
         this.dic["win"] = new Audio("./sounds/win.mp3")
         this.dic["night"] = new Audio("./sounds/night.wav")
+        this.dic["detective"] = new Audio("./sounds/detective.mp3")
+        this.dic["detective_win"] = new Audio("./sounds/detective_win.mp3")
         this.history = []
     }
 
@@ -68,6 +70,12 @@ export class Sound {
             this.dic[key].volume = volume
             if (key == "craw") {
                 this.dic[key].volume = volume * 0.5
+            }
+            if (key == "detective") {
+                this.dic[key].volume = volume * 1.2
+            }
+            if (key == "detective_win") {
+                this.dic[key].volume = volume * 1.2
             }
         }
     }
@@ -78,7 +86,8 @@ export class Sound {
 
     stop() {
         for (let key in this.dic) {
-            this.dic[key].stop()
+            this.dic[key].pause()
+            this.dic[key].currentTime = 0
         }
     }
 

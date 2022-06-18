@@ -6,6 +6,7 @@ import { Player } from "./components/player.js";
 import { Rule } from "./components/rule.js";
 import { Explain } from "./components/explain.js";
 import { RoleMenu } from "./components/role_menu.js";
+import { DetectiveMenu } from "./components/detective_menu.js";
 import { RoleDescription } from "./components/role_description.js";
 import { Voice } from "./components/voice.js";
 import { config, jpnname2engname, rolename2token } from "./config.js";
@@ -29,7 +30,8 @@ let infos = {
     "volume": 0.2,
     "now_status": "offline",
     "playerids": [],
-    "zindex": 10000
+    "zindex": 10000,
+    "now_detective_answer": []
 }
 let elements = {
     "background": null,
@@ -45,6 +47,7 @@ let elements = {
     "logout_button": null,
     "rolelist_button": null,
     "rolemenu": null,
+    "detectivemenu": null,
     "rolelist": null,
     "result_button": null,
     "role_description":null,
@@ -278,6 +281,12 @@ function drawGame() {
     if (infos["game_status"]["status"] == "RESULT") {
         drawResult()
     }
+    if (infos["game_status"]["status"] == "DETECTIVE") {
+        drawDetective()
+    }
+    if (infos["game_status"]["status"] == "DETECTIVE_READY") {
+        drawDetectiveReady()
+    }
 }
 
 function drawStatus(message) {
@@ -495,6 +504,69 @@ function getVoteLog() {
     return result
 }
 
+function drawDetective() {
+    drawBackground("detective")
+    let status = infos["game_status"]
+    drawStatus("推理ショー")
+
+    sound.play("detective", infos, status["detective"])
+
+    function reorder_callback(answer) {
+        let mes = "now_detective_answer:" + infos["discord_id"] + ":"
+        for (let i=0;i<answer.length;i++) {
+            if (i != 0) {
+                mes += ","
+            }
+            mes += answer[i]
+        }
+        sendData(
+            {
+                "message": mes,
+                "discord_id": infos["discord_id"]
+            }
+        )
+    }
+
+    function button_click(e) {
+        sendData(
+            {
+                "message": this.message,
+                "discord_id": infos["discord_id"]
+            }
+        )
+    }
+
+    //役職並べ替えメニューを表示
+    if (!elements["detectivemenu"]) {
+        let rolemenu = new DetectiveMenu(
+            infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05,
+            80 * RATIO, RATIO, reorder_callback, button_click,
+            status["detective"] == infos["discord_id"]
+        )
+        elements["detectivemenu"] = rolemenu
+    }
+    elements["detectivemenu"].draw(true)
+}
+
+function drawDetectiveReady() {
+    drawBackground("detective")
+    let status = infos["game_status"]
+    drawStatus("推理ショー")
+
+    sound.stop()
+
+    //役職並べ替えメニューを表示
+    if (!elements["detectivemenu"]) {
+        let rolemenu = new DetectiveMenu(
+            infos, buttons, SCREEN_W * 0.9, SCREEN_W * 0.05,
+            80 * RATIO, RATIO, reorder_callback, button_click,
+            false
+        )
+        elements["detectivemenu"] = rolemenu
+    }
+    elements["detectivemenu"].draw(true)
+}
+
 function drawNight() {
     if (infos["rolecard_rotate"]) {
         infos["rolecard_rotate"] = false
@@ -561,6 +633,7 @@ function drawAfternoon() {
     }
     drawCoButtons()
     drawHandButton()
+    drawSideActionButton()
 
     function button_click(e) {
         sendData(
@@ -614,6 +687,9 @@ function drawResult() {
     } else if (status["result"] == "FOX") {
         drawBackground("fox_win")
         sound.play("lose", infos, "first")
+    } else if (status["result"] == "DETECTIVE") {
+        drawBackground("detective")
+        sound.play("detective_win", infos, "first")
     } else {
         drawBackground("afternoon")
         sound.play("win", infos, "first")
@@ -628,6 +704,9 @@ function drawResult() {
     }
     if (status["result"] == "FOX") {
         title = "妖狐チーム勝利"
+    }
+    if (status["result"] == "DETECTIVE") {
+        title = "名探偵勝利"
     }
     drawStatus(title)
 
@@ -654,6 +733,62 @@ function drawResult() {
         }
         elements["result_button"].draw()
     } else {
+    }
+}
+
+function drawSideActionButton() {
+    function button_click(e) {
+        sendData(
+            {
+                "message": this.message,
+                "discord_id": infos["discord_id"]
+            }
+        )
+    }
+    for (let key in elements) {
+        if (key.indexOf("detective_show:") == 0) {
+            if (elements[key]) {
+                elements[key].element.hidden = true
+                if (elements[key].confirm) {
+                    elements[key].confirm.element.hidden = true
+                    elements[key].confirm.ok_button.element.hidden = true
+                    elements[key].confirm.ng_button.element.hidden = true
+                }
+            }
+        }
+    }
+    let players = infos["game_status"]["players"]
+    for (let i=0;i<players.length;i++) {
+        if (players[i]["discord_id"] == infos["discord_id"]) {
+            let actions = players[i]["actions"]
+            let count = 1
+            for (let j=0;j<actions.length;j++) {
+                let button_key = ""
+                let title = ""
+                if (actions[j].indexOf("detective_show:") == 0) {
+                    button_key = "detective_show:"
+                    title = "推理ショー"
+                }
+                if (button_key == "") {
+                    continue
+                }
+                let ruleW = 230 * RATIO
+                let y = (SCREEN_H - ruleW * 0.6) / 2 - 30 * RATIO
+                if (!elements[button_key]) {
+                    let button = new Button(
+                        title, buttons, button_click,
+                        80 * RATIO,
+                        (SCREEN_W - ruleW) / 2 - 80 * RATIO * 1.1 - 80 * RATIO * Math.floor(count / 4),
+                        y + 10 * RATIO + (count % 4) * (80 * RATIO / 132 * 45),
+                        actions[j], true, infos
+                    )
+                    elements[button_key] = button
+                }
+                elements[button_key].draw(title, actions[j])
+                elements[button_key].element.hidden = false
+                count += 1;
+            }
+        }
     }
 }
 
