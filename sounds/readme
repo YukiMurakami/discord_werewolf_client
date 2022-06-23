@@ -4,7 +4,7 @@ craw.mp3: 投票間際になるカラスの声
 lose.mp3: 村人敗北のテーマ
 minute_bell.mp3: 議論開始、議論終了1,2,3分前の合図
 morning.mp3: 朝になった時の音
-night.wav: 夜になった時の音
+night.mp3: 夜になった時の音
 vote_bell.mp3: 投票開始の合図
 win.mp3: 村人勝利のテーマ
 detective.mp3: 名探偵の推理ショーのBGM

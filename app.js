@@ -27,7 +27,7 @@ let infos = {
     "roleset_open": false,
     "rolelist_open": false,
     "rolecard_rotate": false,
-    "volume": 0.2,
+    "volume": 0.5,
     "now_status": "offline",
     "playerids": [],
     "zindex": 10000,
