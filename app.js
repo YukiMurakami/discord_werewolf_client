@@ -170,7 +170,7 @@ function drawTitle() {
 
     let mes = document.createElement("div")
     buttons.appendChild(mes)
-    mes.innerText = "Discord 人狼ツール v1.0.1"
+    mes.innerText = "Discord 人狼ツール v1.0.2"
     mes.style.color = "#ffffff"
     mes.style.fontSize = (RATIO * 30).toString() + "px"
     mes.style.position = "absolute"

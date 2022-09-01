@@ -18,6 +18,7 @@ function get_rolename2token_dic() {
         "immoralist": "背",
         "queen": "女",
         "detective": "探",
+        "darkknight": "闇",
     }
     return dic
 }
@@ -53,6 +54,7 @@ export function jpnname2engname(rolename) {
         "背徳者": "immoralist",
         "女王": "queen",
         "名探偵": "detective",
+        "闇騎士": "darkknight",
         "?": "back_card"
     }
     return dic[rolename]
@@ -155,6 +157,12 @@ export function engname2description(rolename) {
             "team": team["detective"],
             "victory_condition": victory_condition["detective"],
             "description": "投票前に推理ショーを開くことができる。全員の役職を当てられたらその時点で単独勝利。間違えたら恥ずか死。"
+        },
+        "darkknight": {
+            "name": "闇騎士",
+            "team":team["human"],
+            "victory_condition":victory_condition["human"],
+            "description":"夜時間毎に1人だけ人狼の襲撃から護衛することができる。<br>護衛した先と人狼の襲撃先が一致した場合、襲撃は失敗し平和な朝を迎える。<br>自分自身を守ることは出来ない。<br>占い結果と霊媒結果が人狼となる。",
         }
     }
     return dic[rolename]
